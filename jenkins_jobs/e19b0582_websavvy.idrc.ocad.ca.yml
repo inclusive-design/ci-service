@@ -1,0 +1,23 @@
+- job:
+    name: 'e19b0582_websavvy.idrc.ocad.ca'
+    project-type: 'freestyle'
+    display-name: 'e19b0582_websavvy.idrc.ocad.ca'
+    scm:
+        - git:
+            url: https://github.com/inclusive-design/websavvy
+            skip-tag: true
+            branches:
+                - gh-pages
+    triggers:
+        - github
+    publishers:
+      - email:
+            recipients: idi-ops@lists.inclusivedesign.ca
+      - ssh:
+            site: 'e19b0582_websavvy.idrc.ocad.ca'
+            source: '**'
+            target: '/srv/www/e19b0582'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
+

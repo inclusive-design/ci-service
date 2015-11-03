@@ -1,0 +1,17 @@
+- job:
+    name: update-jenkins-interface
+    node: master
+    project-type: freestyle
+    concurrent: false
+    builders:
+      - shell: |
+          #!/bin/sh -ex
+          echo "When this build finishes, it will trigger the global post script"
+    triggers:
+      - timed: "*/5 * * * *"
+    logrotate:
+      numToKeep: 1
+    publishers:
+      - email:
+          recipients: idi-ops@lists.inclusivedesign.ca
+

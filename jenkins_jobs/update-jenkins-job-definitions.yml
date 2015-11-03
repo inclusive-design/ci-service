@@ -1,0 +1,22 @@
+- job:
+    name: 'update-jenkins-job-definitions'
+    node: master
+    project-type: 'freestyle'
+    display-name: 'update-jenkins-job-definitions'
+    scm:
+        - git:
+            url: https://github.com/inclusive-design/ci-service.git
+            branches:
+                - master
+    triggers:
+      - github
+
+    builders:      
+      - shell: /usr/bin/jenkins-jobs --conf /etc/jenkins_jobs.ini update --delete-old ./jenkins_jobs
+
+    logrotate:
+      daysToKeep: 7
+
+    publishers:
+      - email:
+          recipients: idi-ops@lists.inclusivedesign.ca
