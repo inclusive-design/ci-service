@@ -5,7 +5,10 @@
     display-name: 'update-jenkins-job-definitions'
     scm:
         - git:
-            url: https://github.com/inclusive-design/ci-service.git
+            url: git@github.com:inclusive-design/ci-service.git
+            credentials-id: 7ffafe1a-7ab2-4e9d-899c-5f068ad10b9c
+            git-config-name: idrc-deploy
+            git-config-email: idrc.ops@gmail.com
             branches:
                 - master
     triggers:
