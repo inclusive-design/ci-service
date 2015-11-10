@@ -1,0 +1,23 @@
+- job:
+    name: '5d967a8f_handbook.floeproject.org'
+    project-type: 'freestyle'
+    display-name: '5d967a8f_handbook.floeproject.org'
+    scm:
+        - git:
+            url: http://fluid-project.github.io/docs-inclusive-learning/
+            skip-tag: true
+            branches:
+                - gh-pages
+    triggers:
+        - github
+    publishers:
+      - email:
+            recipients: idi-ops@lists.inclusivedesign.ca
+      - ssh:
+            site: '5d967a8f_handbook.floeproject.org'
+            source: '**'
+            target: '/srv/www/5d967a8f'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
+
