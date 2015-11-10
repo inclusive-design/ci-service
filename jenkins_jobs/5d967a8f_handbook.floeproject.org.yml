@@ -4,7 +4,7 @@
     display-name: '5d967a8f_handbook.floeproject.org'
     scm:
         - git:
-            url: http://fluid-project.github.io/docs-inclusive-learning.git
+            url: https://github.com/fluid-project/docs-inclusive-learning.git
             skip-tag: true
             branches:
                 - gh-pages
