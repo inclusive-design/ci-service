@@ -1,0 +1,143 @@
+---
+
+- defaults:
+    name: gpii-universal
+    git_repo: https://github.com/gpii-ops/docker-universal.git
+    git_branch: master
+    nodejs_version: 0.10.36
+    docker_username: gpii
+    docker_image: universal
+    docker_tag: latest
+    build_timeout: 30
+    email_recipient: idi-ops@lists.inclusivedesign.ca
+    jenkins_node: i-0027.tor1.inclusivedesign.ca
+
+- project:
+    name: review4
+    git_branch: review4
+    nodejs_version: 0.10.41
+    docker_tag: review4
+    jobs:
+      - 'docker-gpii-universal-all'
+
+- project:
+    name: master
+    git_branch: master
+    nodejs_version: 0.10.36
+    docker_tag: latest
+    jobs:
+      - 'docker-gpii-universal-all'
+
+# WARNING: Be careful changing anything below.
+
+# Used to ensure only one `docker push` command runs at a time
+- wrapper:
+    name: gpii-universal-docker-push
+    wrappers:
+      - exclusion:
+          resources:
+            - 'gpii-universal-docker-push'
+
+- job-group:
+    name: 'docker-gpii-universal-all'
+    jobs:
+      - 'docker-gpii-universal-{name}'
+      - 'docker-gpii-universal-{name}-build'
+      - 'docker-gpii-universal-{name}-test'
+      - 'docker-gpii-universal-{name}-release'
+      - 'docker-gpii-universal-{name}-cleanup'
+
+- job-template:
+    defaults: gpii-universal
+    name: 'docker-gpii-universal-{name}'
+    description: 'Builds, tests and pushes the GPII Universal Docker image'
+    project-type: multijob
+    concurrent: false
+    node: '{jenkins_node}'
+    wrappers:
+      - timeout:
+          timeout: '{build_timeout}'
+          abort: yes
+    publishers:
+      - email:
+            recipients: '{email_recipient}'
+    scm:
+      - git:
+          url: '{git_repo}'
+          skip-tag: true
+          branches:
+            - '{git_branch}'
+    triggers:
+      - github                                                           # when gpii-ops/universal changes
+      - pollurl:                                                         # when GPII/universal changes
+          cron: '*/5 * * * *'
+          urls:
+            - url: 'https://github.com/GPII/universal/commits/{git_branch}.atom'
+              check-content:
+                - xml:
+                    - '/feed/updated'
+      - reverse:                                                         # when new Node.js build completes
+          jobs: 'docker-idi-nodejs-{nodejs_version}'
+          result: success
+    builders:
+      - multijob:
+          name: build
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-gpii-universal-{name}-build
+              predefined-parameters: parent_workspace=$WORKSPACE
+      - multijob:
+          name: test
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-gpii-universal-{name}-test
+              predefined-parameters: parent_workspace=$WORKSPACE
+      - multijob:
+          name: release
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-gpii-universal-{name}-release
+              predefined-parameters: parent_workspace=$WORKSPACE
+
+- job-template:
+    defaults: gpii-universal
+    name: 'docker-gpii-universal-{name}-build'
+    description: 'Builds Docker image'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker build --pull -t {docker_username}/{docker_image}:{docker_tag} .
+
+- job-template:
+    defaults: gpii-universal
+    name: 'docker-gpii-universal-{name}-test'
+    description: 'Runs a test container'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker run --rm -i {docker_username}/{docker_image}:{docker_tag} node --eval "console.log('OK');"
+
+# Tag operation is forced in case they've happened in the past from a previous build (no-op)
+# Push is forced otherwise a prompt is displayed asking if really want to publish to public registry
+- job-template:
+    defaults: gpii-universal
+    name: 'docker-gpii-universal-{name}-release'
+    description: 'Publishes to Docker Hub'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - gpii-universal-docker-push
+    builders:
+      - critical-block-start
+      - shell: docker push -f {docker_username}/{docker_image}:{docker_tag}
+      - critical-block-end
+
+# Not included in any phase so intermediate layers can be reused
+- job-template:
+    defaults: gpii-universal
+    name: 'docker-gpii-universal-{name}-cleanup'
+    description: 'Removes build artifacts'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag}

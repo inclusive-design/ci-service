@@ -1,0 +1,140 @@
+---
+
+- defaults:
+    name: idi-nodejs
+    git_repo: https://github.com/idi-ops/docker-nodejs.git
+    git_branch: 0.10.36
+    docker_username: inclusivedesign
+    docker_image: nodejs
+    docker_tag: latest
+    build_timeout: 30
+    email_recipient: idi-ops@lists.inclusivedesign.ca
+    jenkins_node: i-0027.tor1.inclusivedesign.ca
+
+- project:
+    name: 0.10.36
+    git_branch: 0.10.36
+    docker_tag: latest
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
+    name: 0.10.41
+    git_branch: 0.10.41
+    docker_tag: 0.10.41
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
+    name: 4.2.4
+    git_branch: 4.2.4
+    docker_tag: 4.2.4
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+# WARNING: Be careful changing anything below.
+
+# Used to ensure only one `docker push` command runs at a time
+- wrapper:
+    name: idi-nodejs-docker-push
+    wrappers:
+      - exclusion:
+          resources:
+            - 'idi-nodejs-docker-push'
+
+- job-group:
+    name: 'docker-idi-nodejs-all'
+    jobs:
+      - 'docker-idi-nodejs-{name}'
+      - 'docker-idi-nodejs-{name}-build'
+      - 'docker-idi-nodejs-{name}-test'
+      - 'docker-idi-nodejs-{name}-release'
+      - 'docker-idi-nodejs-{name}-cleanup'
+
+- job-template:
+    defaults: idi-nodejs
+    name: 'docker-idi-nodejs-{name}'
+    description: 'Builds, tests and pushes the Node.js {name} Docker image'
+    project-type: multijob
+    concurrent: false
+    node: '{jenkins_node}'
+    wrappers:
+      - timeout:
+          timeout: '{build_timeout}'
+          abort: yes
+    publishers:
+      - email:
+            recipients: '{email_recipient}'
+    scm:
+      - git:
+          url: '{git_repo}'
+          skip-tag: true
+          branches:
+            - '{git_branch}'
+    triggers:
+      - github
+      - reverse:
+          jobs: docker-idi-centos-7
+          result: success
+    builders:
+      - multijob:
+          name: build
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-idi-nodejs-{name}-build
+              predefined-parameters: parent_workspace=$WORKSPACE
+      - multijob:
+          name: test
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-idi-nodejs-{name}-test
+              predefined-parameters: parent_workspace=$WORKSPACE
+      - multijob:
+          name: release
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-idi-nodejs-{name}-release
+              predefined-parameters: parent_workspace=$WORKSPACE
+
+- job-template:
+    defaults: idi-nodejs
+    name: 'docker-idi-nodejs-{name}-build'
+    description: 'Builds Docker image'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: 'docker build --pull -t {docker_username}/{docker_image}:{docker_tag} .'
+
+- job-template:
+    defaults: idi-nodejs
+    name: 'docker-idi-nodejs-{name}-test'
+    description: 'Runs a test container'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker run --rm -i {docker_username}/{docker_image}:{docker_tag} node --eval "console.log('OK');"
+
+# Tag operation is forced in case they've happened in the past from a previous build (no-op)
+# Push is forced otherwise a prompt is displayed asking if really want to publish to public registry
+- job-template:
+    defaults: idi-nodejs
+    name: 'docker-idi-nodejs-{name}-release'
+    description: 'Publishes to Docker Hub'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - idi-nodejs-docker-push
+    builders:
+      - critical-block-start
+      - shell: docker push -f {docker_username}/{docker_image}:{docker_tag}
+      - critical-block-end
+
+# Not included in any phase so intermediate layers can be reused
+- job-template:
+    defaults: idi-nodejs
+    name: 'docker-idi-nodejs-{name}-cleanup'
+    description: 'Removes build artifacts'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag}
