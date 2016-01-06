@@ -4,14 +4,11 @@
     project-type: freestyle
     concurrent: false
     builders:
-      - shell: |
-          #!/bin/sh -ex
-          echo "When this build finishes, it will trigger the global post script"
+      - shell: /var/lib/jenkins/global-post-script/update-static.sh
     triggers:
-      - timed: "*/5 * * * *"
+      - timed: "H/5 * * * *"
     logrotate:
       numToKeep: 1
     publishers:
       - email:
           recipients: idi-ops@lists.inclusivedesign.ca
-
