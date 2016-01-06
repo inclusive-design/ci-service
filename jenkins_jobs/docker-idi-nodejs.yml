@@ -19,6 +19,13 @@
       - 'docker-idi-nodejs-all'
 
 - project:
+    name: 0.10.36
+    git_branch: 0.10.36
+    docker_tag: 0.10.36
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
     name: 0.10.41
     git_branch: 0.10.41
     docker_tag: 0.10.41
