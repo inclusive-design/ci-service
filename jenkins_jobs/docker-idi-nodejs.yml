@@ -12,7 +12,7 @@
     jenkins_node: i-0027.tor1.inclusivedesign.ca
 
 - project:
-    name: 0.10.36
+    name: latest
     git_branch: 0.10.36
     docker_tag: latest
     jobs:
