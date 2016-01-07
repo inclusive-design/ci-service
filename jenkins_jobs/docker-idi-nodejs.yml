@@ -85,23 +85,32 @@
           result: success
     builders:
       - multijob:
-          name: build
+          name: Build
           condition: SUCCESSFUL
           projects:
             - name: docker-idi-nodejs-{name}-build
               predefined-parameters: parent_workspace=$WORKSPACE
       - multijob:
-          name: test
+          name: Test
           condition: SUCCESSFUL
           projects:
             - name: docker-idi-nodejs-{name}-test
               predefined-parameters: parent_workspace=$WORKSPACE
       - multijob:
-          name: release
+          name: Release
           condition: SUCCESSFUL
           projects:
             - name: docker-idi-nodejs-{name}-release
               predefined-parameters: parent_workspace=$WORKSPACE
+
+- job-template:
+    defaults: idi-nodejs
+    name: 'docker-idi-nodejs-{name}-cleanup'
+    description: 'Removes build artifacts'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag}
 
 - job-template:
     defaults: idi-nodejs
@@ -135,13 +144,3 @@
       - critical-block-start
       - shell: docker push -f {docker_username}/{docker_image}:{docker_tag}
       - critical-block-end
-
-# Not included in any phase so intermediate layers can be reused
-- job-template:
-    defaults: idi-nodejs
-    name: 'docker-idi-nodejs-{name}-cleanup'
-    description: 'Removes build artifacts'
-    node: '{jenkins_node}'
-    workspace: $parent_workspace
-    builders:
-      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag}

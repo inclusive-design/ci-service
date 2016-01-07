@@ -1,4 +1,3 @@
----
 
 - defaults:
     name: idi-centos
@@ -47,7 +46,7 @@
             - '{git_branch}'
     triggers:
       - github                # when IDI's Dockerfile gets updated
-      - pollurl:              # when Docker official images get updated
+      - pollurl:                                                         # when GPII/universal changes
           cron: 'H * * * *'
           urls:
             - url: 'https://github.com/docker-library/official-images/commits/master.atom'
