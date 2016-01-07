@@ -45,20 +45,21 @@
           branches:
             - '{git_branch}'
     triggers:
-      - github                # when IDI's Dockerfile gets updated
-      - pollurl:                                                         # when GPII/universal changes
+      - github
+      - pollurl:
           cron: 'H * * * *'
           urls:
             - url: 'https://github.com/docker-library/official-images/commits/master.atom'
               check-content:
                 - xml:
                     - '/feed/updated'
-#      - pollurl:              # when CentOS' base Dockerfile gets updated
-#          cron: 'H * * * *'   # checks for changes every hour
-#          urls:
-#            - url: https://raw.githubusercontent.com/docker-library/official-images/master/library/centos
-#              check-etag: true
     builders:
+      - multijob:
+          name: Cleanup
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-idi-centos-{name}-cleanup
+              predefined-parameters: parent_workspace=$WORKSPACE
       - multijob:
           name: Build
           condition: SUCCESSFUL
@@ -77,6 +78,15 @@
           projects:
             - name: docker-idi-centos-{name}-release
               predefined-parameters: parent_workspace=$WORKSPACE
+
+- job-template:
+    defaults: idi-centos
+    name: docker-idi-centos-{name}-cleanup
+    description: 'Removes build artifacts'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag}
 
 - job-template:
     defaults: idi-centos
@@ -106,13 +116,3 @@
     workspace: $parent_workspace
     builders:
       - shell: docker push -f {docker_username}/{docker_image}:{docker_tag}
-
-# Not included in any phase so intermediate layers can be reused
-- job-template:
-    defaults: idi-centos
-    name: docker-idi-centos-{name}-cleanup
-    description: 'Removes build artifacts'
-    node: '{jenkins_node}'
-    workspace: $parent_workspace
-    builders:
-      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag}

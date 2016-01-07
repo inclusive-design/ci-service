@@ -85,6 +85,12 @@
           result: success
     builders:
       - multijob:
+          name: Cleanup
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-idi-nodejs-{name}-cleanup
+              predefined-parameters: parent_workspace=$WORKSPACE
+      - multijob:
           name: Build
           condition: SUCCESSFUL
           projects:
