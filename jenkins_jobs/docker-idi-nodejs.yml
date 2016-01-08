@@ -12,28 +12,32 @@
     jenkins_node: i-0027.tor1.inclusivedesign.ca
 
 - project:
-    name: latest
+    name: idi-nodejs-latest
+    jenkins_tag: latest
     git_branch: 0.10.36
     docker_tag: latest
     jobs:
       - 'docker-idi-nodejs-all'
 
 - project:
-    name: 0.10.36
+    name: idi-nodejs-0.10.36
+    jenkins_tag: 0.10.36
     git_branch: 0.10.36
     docker_tag: 0.10.36
     jobs:
       - 'docker-idi-nodejs-all'
 
 - project:
-    name: 0.10.41
+    name: idi-nodejs-0.10.41
+    jenkins_tag: 0.10.41
     git_branch: 0.10.41
     docker_tag: 0.10.41
     jobs:
       - 'docker-idi-nodejs-all'
 
 - project:
-    name: 4.2.4
+    name: idi-nodejs-4.2.4
+    jenkins_tag: 4.2.4
     git_branch: 4.2.4
     docker_tag: 4.2.4
     jobs:
@@ -52,16 +56,16 @@
 - job-group:
     name: 'docker-idi-nodejs-all'
     jobs:
-      - 'docker-idi-nodejs-{name}'
-      - 'docker-idi-nodejs-{name}-build'
-      - 'docker-idi-nodejs-{name}-test'
-      - 'docker-idi-nodejs-{name}-release'
-      - 'docker-idi-nodejs-{name}-cleanup'
+      - 'docker-idi-nodejs-{jenkins_tag}'
+      - 'docker-idi-nodejs-{jenkins_tag}-build'
+      - 'docker-idi-nodejs-{jenkins_tag}-test'
+      - 'docker-idi-nodejs-{jenkins_tag}-release'
+      - 'docker-idi-nodejs-{jenkins_tag}-cleanup'
 
 - job-template:
     defaults: idi-nodejs
-    name: 'docker-idi-nodejs-{name}'
-    description: 'Builds, tests and pushes the Node.js {name} Docker image'
+    name: 'docker-idi-nodejs-{jenkins_tag}'
+    description: 'Builds, tests and pushes the Node.js {jenkins_tag} Docker image'
     project-type: multijob
     concurrent: false
     node: '{jenkins_node}'
@@ -88,39 +92,39 @@
           name: Cleanup
           condition: SUCCESSFUL
           projects:
-            - name: docker-idi-nodejs-{name}-cleanup
+            - name: docker-idi-nodejs-{jenkins_tag}-cleanup
               predefined-parameters: parent_workspace=$WORKSPACE
       - multijob:
           name: Build
           condition: SUCCESSFUL
           projects:
-            - name: docker-idi-nodejs-{name}-build
+            - name: docker-idi-nodejs-{jenkins_tag}-build
               predefined-parameters: parent_workspace=$WORKSPACE
       - multijob:
           name: Test
           condition: SUCCESSFUL
           projects:
-            - name: docker-idi-nodejs-{name}-test
+            - name: docker-idi-nodejs-{jenkins_tag}-test
               predefined-parameters: parent_workspace=$WORKSPACE
       - multijob:
           name: Release
           condition: SUCCESSFUL
           projects:
-            - name: docker-idi-nodejs-{name}-release
+            - name: docker-idi-nodejs-{jenkins_tag}-release
               predefined-parameters: parent_workspace=$WORKSPACE
 
 - job-template:
     defaults: idi-nodejs
-    name: 'docker-idi-nodejs-{name}-cleanup'
+    name: 'docker-idi-nodejs-{jenkins_tag}-cleanup'
     description: 'Removes build artifacts'
     node: '{jenkins_node}'
     workspace: $parent_workspace
     builders:
-      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag}
+      - shell: docker rmi -f {docker_username}/{docker_image}:{docker_tag}
 
 - job-template:
     defaults: idi-nodejs
-    name: 'docker-idi-nodejs-{name}-build'
+    name: 'docker-idi-nodejs-{jenkins_tag}-build'
     description: 'Builds Docker image'
     node: '{jenkins_node}'
     workspace: $parent_workspace
@@ -129,7 +133,7 @@
 
 - job-template:
     defaults: idi-nodejs
-    name: 'docker-idi-nodejs-{name}-test'
+    name: 'docker-idi-nodejs-{jenkins_tag}-test'
     description: 'Runs a test container'
     node: '{jenkins_node}'
     workspace: $parent_workspace
@@ -140,7 +144,7 @@
 # Push is forced otherwise a prompt is displayed asking if really want to publish to public registry
 - job-template:
     defaults: idi-nodejs
-    name: 'docker-idi-nodejs-{name}-release'
+    name: 'docker-idi-nodejs-{jenkins_tag}-release'
     description: 'Publishes to Docker Hub'
     node: '{jenkins_node}'
     workspace: $parent_workspace

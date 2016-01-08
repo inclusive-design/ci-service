@@ -1,5 +1,5 @@
 ---
-# These jobs will build the GPII/universal Docker image.
+# These jobs will build the GPII/preferences-server Docker image.
 #
 # It's necessary to specify both the repository where Dockerfile exists
 # as well as the actual GPII/universal repository. This way, Jenkins 
@@ -31,10 +31,10 @@
 # that should be built.
 
 - defaults:
-    name: gpii-universal
+    name: gpii-preferences-server
     git_app_repo: https://github.com/GPII/universal.git
     git_app_branch: master
-    git_docker_repo: https://github.com/gpii-ops/docker-universal.git
+    git_docker_repo: https://github.com/gpii-ops/docker-preferences-server.git
     git_docker_branch: master
     nodejs_version: 0.10.36
     docker_username: gpii
@@ -45,47 +45,47 @@
     jenkins_node: i-0027.tor1.inclusivedesign.ca
 
 - project:
-    name: gpii-universal-review4
+    name: gpii-preferences-server-review4
     jenkins_tag: review4
     git_app_branch: review4
     git_docker_branch: review4
     nodejs_version: 0.10.41
     docker_tag: review4
     jobs:
-      - 'docker-gpii-universal-all'
+      - 'docker-gpii-preferences-server-all'
 
 - project:
-    name: gpii-universal-master
+    name: gpii-preferences-server-master
     jenkins_tag: master
     git_app_branch: master
     git_docker_branch: master
     nodejs_version: 0.10.36
     docker_tag: latest
     jobs:
-      - 'docker-gpii-universal-all'
+      - 'docker-gpii-preferences-server-all'
 
 # WARNING: Be careful changing anything below.
 
 # Used to ensure only one `docker push` command runs at a time
 - wrapper:
-    name: gpii-universal-docker-push
+    name: gpii-preferences-server-docker-push
     wrappers:
       - exclusion:
           resources:
-            - 'gpii-universal-docker-push'
+            - 'gpii-preferences-server-docker-push'
 
 - job-group:
-    name: 'docker-gpii-universal-all'
+    name: 'docker-gpii-preferences-server-all'
     jobs:
-      - 'docker-gpii-universal-{jenkins_tag}'
-      - 'docker-gpii-universal-{jenkins_tag}-build'
-      - 'docker-gpii-universal-{jenkins_tag}-test'
-      - 'docker-gpii-universal-{jenkins_tag}-release'
-      - 'docker-gpii-universal-{jenkins_tag}-cleanup'
+      - 'docker-gpii-preferences-server-{jenkins_tag}'
+      - 'docker-gpii-preferences-server-{jenkins_tag}-build'
+      - 'docker-gpii-preferences-server-{jenkins_tag}-test'
+      - 'docker-gpii-preferences-server-{jenkins_tag}-release'
+      - 'docker-gpii-preferences-server-{jenkins_tag}-cleanup'
 
 - job-template:
-    defaults: gpii-universal
-    name: 'docker-gpii-universal-{jenkins_tag}'
+    defaults: gpii-preferences-server
+    name: 'docker-gpii-preferences-server-{jenkins_tag}'
     description: 'Builds, tests and pushes the GPII Universal Docker image'
     project-type: multijob
     concurrent: false
@@ -115,37 +115,37 @@
     triggers:
       - github
       - reverse:
-          jobs: 'docker-idi-nodejs-{nodejs_version}'
+          jobs: 'docker-gpii-universal-{jenkins_tag}'
           result: success
     builders:
       - multijob:
           name: Cleanup
           condition: SUCCESSFUL
           projects:
-            - name: docker-gpii-universal-{jenkins_tag}-cleanup
+            - name: docker-gpii-preferences-server-{jenkins_tag}-cleanup
               predefined-parameters: parent_workspace=$WORKSPACE/docker
       - multijob:
           name: Build
           condition: SUCCESSFUL
           projects:
-            - name: docker-gpii-universal-{jenkins_tag}-build
+            - name: docker-gpii-preferences-server-{jenkins_tag}-build
               predefined-parameters: parent_workspace=$WORKSPACE/docker
       - multijob:
           name: Test
           condition: SUCCESSFUL
           projects:
-            - name: docker-gpii-universal-{jenkins_tag}-test
+            - name: docker-gpii-preferences-server-{jenkins_tag}-test
               predefined-parameters: parent_workspace=$WORKSPACE/docker
       - multijob:
           name: Release
           condition: SUCCESSFUL
           projects:
-            - name: docker-gpii-universal-{jenkins_tag}-release
+            - name: docker-gpii-preferences-server-{jenkins_tag}-release
               predefined-parameters: parent_workspace=$WORKSPACE/docker
 
 - job-template:
-    defaults: gpii-universal
-    name: 'docker-gpii-universal-{jenkins_tag}-cleanup'
+    defaults: gpii-preferences-server
+    name: 'docker-gpii-preferences-server-{jenkins_tag}-cleanup'
     description: 'Removes build artifacts'
     node: '{jenkins_node}'
     workspace: $parent_workspace
@@ -153,8 +153,8 @@
       - shell: docker rmi -f {docker_username}/{docker_image}:{docker_tag}
 
 - job-template:
-    defaults: gpii-universal
-    name: 'docker-gpii-universal-{jenkins_tag}-build'
+    defaults: gpii-preferences-server
+    name: 'docker-gpii-preferences-server-{jenkins_tag}-build'
     description: 'Builds Docker image'
     node: '{jenkins_node}'
     workspace: $parent_workspace
@@ -162,24 +162,24 @@
       - shell: docker build --pull -t {docker_username}/{docker_image}:{docker_tag} .
 
 - job-template:
-    defaults: gpii-universal
-    name: 'docker-gpii-universal-{jenkins_tag}-test'
+    defaults: gpii-preferences-server
+    name: 'docker-gpii-preferences-server-{jenkins_tag}-test'
     description: 'Runs a test container'
     node: '{jenkins_node}'
     workspace: $parent_workspace
     builders:
-      - shell: docker run --rm -i {docker_username}/{docker_image}:{docker_tag} node --eval "console.log('OK');"
+      - shell: docker run --rm --entrypoint=/bin/bash -i {docker_username}/{docker_image}:{docker_tag} node --eval "console.log('OK');"
 
 # Tag operation is forced in case they've happened in the past from a previous build (no-op)
 # Push is forced otherwise a prompt is displayed asking if really want to publish to public registry
 - job-template:
-    defaults: gpii-universal
-    name: 'docker-gpii-universal-{jenkins_tag}-release'
+    defaults: gpii-preferences-server
+    name: 'docker-gpii-preferences-server-{jenkins_tag}-release'
     description: 'Publishes to Docker Hub'
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - gpii-universal-docker-push
+      - gpii-preferences-server-docker-push
     builders:
       - critical-block-start
       - shell: docker push -f {docker_username}/{docker_image}:{docker_tag}
