@@ -150,7 +150,7 @@
     node: '{jenkins_node}'
     workspace: $parent_workspace
     builders:
-      - shell: docker rmi -f {docker_username}/{docker_image}:{docker_tag}
+      - shell: docker rmi -f {docker_username}/{docker_image}:{docker_tag} || echo "docker rmi failed. image probably does not exist"
 
 - job-template:
     defaults: gpii-preferences-server
