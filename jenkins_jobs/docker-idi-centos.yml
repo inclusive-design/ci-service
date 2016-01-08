@@ -15,6 +15,13 @@
     jobs:
       - docker-idi-centos-all
 
+- project:
+    name: latest
+    git_branch: master
+    docker_tag: latest
+    jobs:
+      - docker-idi-centos-all
+
 - job-group:
     name: docker-idi-centos-all
     jobs:
