@@ -168,7 +168,7 @@
     node: '{jenkins_node}'
     workspace: $parent_workspace
     builders:
-      - shell: docker run --rm -i {docker_username}/{docker_image}:{docker_tag} node --eval "console.log('OK');"
+      - shell: docker run --rm --entrypoint=/bin/bash -i {docker_username}/{docker_image}:{docker_tag} node --eval "console.log('OK');"
 
 # Tag operation is forced in case they've happened in the past from a previous build (no-op)
 # Push is forced otherwise a prompt is displayed asking if really want to publish to public registry
