@@ -79,7 +79,7 @@
     jobs:
       - 'docker-gpii-universal-{jenkins_tag}'
       - 'docker-gpii-universal-{jenkins_tag}-build'
-      - 'docker-gpii-universal-{jenkins_tag}-test'
+#      - 'docker-gpii-universal-{jenkins_tag}-test'
       - 'docker-gpii-universal-{jenkins_tag}-release'
       - 'docker-gpii-universal-{jenkins_tag}-cleanup'
 
@@ -130,12 +130,12 @@
           projects:
             - name: docker-gpii-universal-{jenkins_tag}-build
               predefined-parameters: parent_workspace=$WORKSPACE/docker
-      - multijob:
-          name: Test
-          condition: SUCCESSFUL
-          projects:
-            - name: docker-gpii-universal-{jenkins_tag}-test
-              predefined-parameters: parent_workspace=$WORKSPACE/docker
+#      - multijob:
+#          name: Test
+#          condition: SUCCESSFUL
+#          projects:
+#            - name: docker-gpii-universal-{jenkins_tag}-test
+#              predefined-parameters: parent_workspace=$WORKSPACE/docker
       - multijob:
           name: Release
           condition: SUCCESSFUL
@@ -161,14 +161,14 @@
     builders:
       - shell: docker build --pull -t {docker_username}/{docker_image}:{docker_tag} .
 
-- job-template:
-    defaults: gpii-universal
-    name: 'docker-gpii-universal-{jenkins_tag}-test'
-    description: 'Runs a test container'
-    node: '{jenkins_node}'
-    workspace: $parent_workspace
-    builders:
-      - shell: docker run --rm -i {docker_username}/{docker_image}:{docker_tag} node --eval "console.log('OK');"
+#- job-template:
+#    defaults: gpii-universal
+#    name: 'docker-gpii-universal-{jenkins_tag}-test'
+#    description: 'Runs a test container'
+#    node: '{jenkins_node}'
+#    workspace: $parent_workspace
+#    builders:
+#      - shell: docker run --rm -i {docker_username}/{docker_image}:{docker_tag} node --eval "console.log('OK');"
 
 # Tag operation is forced in case they've happened in the past from a previous build (no-op)
 # Push is forced otherwise a prompt is displayed asking if really want to publish to public registry
