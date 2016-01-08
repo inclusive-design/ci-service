@@ -38,7 +38,7 @@
     git_docker_branch: master
     nodejs_version: 0.10.36
     docker_username: gpii
-    docker_image: universal
+    docker_image: flow-manager
     docker_tag: latest
     build_timeout: 30
     email_recipient: idi-ops@lists.inclusivedesign.ca

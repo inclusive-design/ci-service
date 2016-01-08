@@ -2,14 +2,14 @@
 # These jobs will build the GPII/preferences-server Docker image.
 #
 # It's necessary to specify both the repository where Dockerfile exists
-# as well as the actual GPII/universal repository. This way, Jenkins 
+# as well as the actual GPII/universal repository. This way, Jenkins
 # will be notified when both change.
 #
 # The variables git_*_{repo,branch} allow for the flexibility to pick
 # and match the branches are necessary. Ideally, they should be equal
 # but we are not enforcing this here in case some odd situation shows
 # up and we need to break away from that convention.
-# 
+#
 # A similar situation happens with the docker_tag variable.
 #
 # It should be noted that the version of Node.js being used in each
@@ -19,8 +19,8 @@
 # to.
 #
 # Before each build, a cleanup runs to remove the previously created
-# layer so avoid working with stale data. This is necessary during 
-# code changes otherwise Docker will be happy with the existing 
+# layer so avoid working with stale data. This is necessary during
+# code changes otherwise Docker will be happy with the existing
 # layer that matches the string statement from the Dockerfile. This
 # is useful for lowers layers (e.g. CentOS and Node.js) so we don't
 # have to rebuild, but it creates a problem here. We still taking
@@ -38,7 +38,7 @@
     git_docker_branch: master
     nodejs_version: 0.10.36
     docker_username: gpii
-    docker_image: universal
+    docker_image: preferences-server
     docker_tag: latest
     build_timeout: 30
     email_recipient: idi-ops@lists.inclusivedesign.ca
