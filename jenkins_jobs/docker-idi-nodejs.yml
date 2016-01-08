@@ -120,7 +120,7 @@
     node: '{jenkins_node}'
     workspace: $parent_workspace
     builders:
-      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag}
+      - shell: docker rmi -f {docker_username}/{docker_image}:{docker_tag}
 
 - job-template:
     defaults: idi-nodejs
