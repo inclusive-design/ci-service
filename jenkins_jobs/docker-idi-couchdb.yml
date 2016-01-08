@@ -1,0 +1,118 @@
+
+- defaults:
+    name: idi-couchdb
+    docker_username: inclusivedesign
+    docker_image: couchdb
+    git_repo: https://github.com/idi-ops/docker-couchdb.git
+    build_timeout: 30
+    email_recipient: idi-ops@lists.inclusivedesign.ca
+    jenkins_node: i-0027.tor1.inclusivedesign.ca
+
+- project:
+    name: latest
+    git_branch: master
+    docker_tag: latest
+    jobs:
+      - docker-idi-couchdb-all
+
+- job-group:
+    name: docker-idi-couchdb-all
+    jobs:
+      - docker-idi-couchdb-{name}
+      - docker-idi-couchdb-{name}-build
+      - docker-idi-couchdb-{name}-test
+      - docker-idi-couchdb-{name}-release
+      - docker-idi-couchdb-{name}-cleanup
+
+- job-template:
+    defaults: idi-couchdb
+    name: docker-idi-couchdb-{name}
+    description: 'Builds, tests and pushes the CouchDB Docker image'
+    project-type: multijob
+    concurrent: false
+    node: '{jenkins_node}'
+    wrappers:
+      - timeout:
+          timeout: '{build_timeout}'
+          abort: yes
+    publishers:
+      - email:
+            recipients: '{email_recipient}'
+    scm:
+      - git:
+          url: '{git_repo}'
+          skip-tag: true
+          branches:
+            - '{git_branch}'
+    triggers:
+      - github
+      - pollurl:
+          cron: 'H * * * *'
+          urls:
+            - url: 'https://github.com/docker-library/official-images/commits/master.atom'
+              check-content:
+                - xml:
+                    - '/feed/updated'
+    builders:
+      - multijob:
+          name: Cleanup
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-idi-couchdb-{name}-cleanup
+              predefined-parameters: parent_workspace=$WORKSPACE
+      - multijob:
+          name: Build
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-idi-couchdb-{name}-build
+              predefined-parameters: parent_workspace=$WORKSPACE
+      - multijob:
+          name: Test
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-idi-couchdb-{name}-test
+              predefined-parameters: parent_workspace=$WORKSPACE
+      - multijob:
+          name: Publish
+          condition: SUCCESSFUL
+          projects:
+            - name: docker-idi-couchdb-{name}-release
+              predefined-parameters: parent_workspace=$WORKSPACE
+
+- job-template:
+    defaults: idi-couchdb
+    name: docker-idi-couchdb-{name}-cleanup
+    description: 'Removes build artifacts'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag} || echo "docker rmi failed. image probably does not exist"
+
+- job-template:
+    defaults: idi-couchdb
+    name: docker-idi-couchdb-{name}-build
+    description: 'Builds Docker image'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker build --pull -t {docker_username}/{docker_image}:{docker_tag} .
+
+- job-template:
+    defaults: idi-couchdb
+    name: docker-idi-couchdb-{name}-test
+    description: 'Runs a test container'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker run --rm -i -e CONTAINER_TEST=true {docker_username}/{docker_image}:{docker_tag}
+
+# Tag operation is forced in case they've happened in the past from a previous build (no-op)
+# Push is forced otherwise a prompt is displayed asking if really want to publish to public registry
+- job-template:
+    defaults: idi-couchdb
+    name: docker-idi-couchdb-{name}-release
+    description: 'Publishes to Docker Hub'
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    builders:
+      - shell: docker push -f {docker_username}/{docker_image}:{docker_tag}
