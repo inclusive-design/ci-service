@@ -86,7 +86,7 @@
     node: '{jenkins_node}'
     workspace: $parent_workspace
     builders:
-      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag}
+      - shell: docker rmi {docker_username}/{docker_image}:{docker_tag} || echo "docker rmi failed. image probably does not exist"
 
 - job-template:
     defaults: idi-couchdb
@@ -104,7 +104,7 @@
     node: '{jenkins_node}'
     workspace: $parent_workspace
     builders:
-      - shell: docker run --rm -i {docker_username}/{docker_image}:{docker_tag} /usr/bin/ansible -m debug -a "msg='OK'" localhost
+      - shell: docker run --rm -i -e CONTAINER_TEST=true {docker_username}/{docker_image}:{docker_tag}
 
 # Tag operation is forced in case they've happened in the past from a previous build (no-op)
 # Push is forced otherwise a prompt is displayed asking if really want to publish to public registry
