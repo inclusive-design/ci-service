@@ -54,6 +54,22 @@
     jobs:
       - 'docker-gpii-flow-manager-all'
 
+# Builds a version of the flow manager container using cindyli's GPII-1245 branch
+# that includes the security work and security UI necessary for review4
+# this can be removed at the point GPII-1245 is merged into master
+
+- project:
+    name: gpii-flow-manager-GPII-1245
+    jenkins_tag: GPII-1245
+    git_app_repo: https://github.com/cindyli/universal.git
+    git_docker_repo: https://github.com/gpii-ops/docker-flow-manager
+    git_app_branch: GPII-1245
+    git_docker_branch: GPII-1245
+    nodejs_version: 0.10.41
+    docker_tag: GPII-1245
+    jobs:
+      - 'docker-gpii-flow-manager-all'
+
 # WARNING: Be careful changing anything below.
 
 # Used to ensure only one `docker push` command runs at a time
