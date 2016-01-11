@@ -76,7 +76,7 @@
     git_docker_repo: https://github.com/cindyli/universal.git
     git_docker_branch: GPII-1245
     nodejs_version: 0.10.41
-    docker_tag: latest
+    docker_tag: GPII-1245
     jobs:
       - 'docker-gpii-universal-all'
 
