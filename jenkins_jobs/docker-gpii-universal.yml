@@ -64,6 +64,10 @@
     jobs:
       - 'docker-gpii-universal-all'
 
+# Builds a version of the universal container using cindyli's GPII-1245 branch
+# that includes the security work and security UI necessary for review4
+# this can be removed at the point GPII-1245 is merged into master
+
 - project:
     name: gpii-universal-GPII-1245
     jenkins_tag: GPII-1245
