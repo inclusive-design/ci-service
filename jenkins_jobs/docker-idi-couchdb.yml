@@ -46,13 +46,9 @@
             - '{git_branch}'
     triggers:
       - github
-      - pollurl:
-          cron: 'H * * * *'
-          urls:
-            - url: 'https://github.com/docker-library/official-images/commits/master.atom'
-              check-content:
-                - xml:
-                    - '/feed/updated'
+      - reverse:
+          jobs: docker-idi-centos-7
+          result: success
     builders:
       - multijob:
           name: Cleanup
