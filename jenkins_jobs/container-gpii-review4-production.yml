@@ -2,7 +2,7 @@
 # https://issues.jenkins-ci.org/browse/JENKINS-32384
 
 - defaults:
-    name: gpii-review4
+    name: gpii-review4-production
     jenkins_node: master
     ssh_credential: f9c9b39c-070e-42ab-a810-3217654ac92c
 
@@ -13,29 +13,29 @@
     ansible_host_pattern: tor1_gpii_docker_production
     ansible_playbook: deploy_gpii-review4_production.yml
     jobs:
-      - container-gpii-review4-all
+      - container-gpii-review4-production-all
 
 - job-group:
-    name: container-gpii-review4-all
+    name: container-gpii-review4-production-all
     jobs:
-      - 'container-gpii-review4-{jenkins_tag}'
-      - 'container-gpii-review4-{jenkins_tag}-nginx'
-      - 'container-gpii-review4-{jenkins_tag}-couchdb'
-      - 'container-gpii-review4-{jenkins_tag}-preferences-server-data-loader'
-      - 'container-gpii-review4-{jenkins_tag}-preferences-server'
-      - 'container-gpii-review4-{jenkins_tag}-flow-manager'
+      - 'container-gpii-review4-production'
+      - 'container-gpii-review4-production-nginx'
+      - 'container-gpii-review4-production-couchdb'
+      - 'container-gpii-review4-production-preferences-server-data-loader'
+      - 'container-gpii-review4-production-preferences-server'
+      - 'container-gpii-review4-production-flow-manager'
 
 - wrapper:
-    name: deploy_credentials
+    name: deploy_credentials_production
     wrappers:
       - ssh-agent-credentials:
           users:
             - f9c9b39c-070e-42ab-a810-3217654ac92c
 
 - job-template:
-    name: 'container-gpii-review4-{jenkins_tag}'
+    name: 'container-gpii-review4-production'
     project-type: 'multijob'
-    defaults: gpii-review4
+    defaults: gpii-review4-production
     concurrent: false
     node: '{jenkins_node}'
     publishers:
@@ -55,89 +55,89 @@
           name: Database
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-{jenkins_tag}-couchdb'
+            - name: 'container-gpii-review4-production-couchdb'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
       - multijob:
           name: Data load
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-{jenkins_tag}-preferences-server-data-loader'
+            - name: 'container-gpii-review4-production-preferences-server-data-loader'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
       - multijob:
           name: Preferences Server
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-{jenkins_tag}-preferences-server'
+            - name: 'container-gpii-review4-production-preferences-server'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
       - multijob:
           name: Flow Manager
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-{jenkins_tag}-flow-manager'
+            - name: 'container-gpii-review4-production-flow-manager'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
       - multijob:
           name: Load balancer
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-{jenkins_tag}-nginx'
+            - name: 'container-gpii-review4-production-nginx'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
 - job-template:
-    name: 'container-gpii-review4-{jenkins_tag}-nginx'
+    name: 'container-gpii-review4-production-nginx'
     description: Deploy Nginx reverse proxy endpoints'
-    defaults: gpii-review4
+    defaults: gpii-review4-production
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - deploy_credentials
+      - deploy_credentials_production
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t nginx-common,nginx-reverse {ansible_playbook}'
 
 - job-template:
-    name: 'container-gpii-review4-{jenkins_tag}-couchdb'
+    name: 'container-gpii-review4-production-couchdb'
     description: Deploy CouchDB container'
-    defaults: gpii-review4
+    defaults: gpii-review4-production
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - deploy_credentials
+      - deploy_credentials_production
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-couchdb {ansible_playbook}'
 
 - job-template:
-    name: 'container-gpii-review4-{jenkins_tag}-preferences-server-data-loader'
+    name: 'container-gpii-review4-production-preferences-server-data-loader'
     description: Load preferences data
-    defaults: gpii-review4
+    defaults: gpii-review4-production
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - deploy_credentials
+      - deploy_credentials_production
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-dataloader {ansible_playbook}'
 
 - job-template:
-    name: 'container-gpii-review4-{jenkins_tag}-preferences-server'
+    name: 'container-gpii-review4-production-preferences-server'
     description: Deploy Preferences Server container
-    defaults: gpii-review4
+    defaults: gpii-review4-production
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - deploy_credentials
+      - deploy_credentials_production
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-prefserver {ansible_playbook}'
 
 - job-template:
-    name: 'container-gpii-review4-{jenkins_tag}-flow-manager'
+    name: 'container-gpii-review4-production-flow-manager'
     description: Deploy Flow Manager container
-    defaults: gpii-review4
+    defaults: gpii-review4-production
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - deploy_credentials
+      - deploy_credentials_production
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-flowmanager {ansible_playbook}'
 
