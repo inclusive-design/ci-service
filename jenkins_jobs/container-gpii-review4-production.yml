@@ -7,11 +7,11 @@
     ssh_credential: f9c9b39c-070e-42ab-a810-3217654ac92c
 
 - project:
-    name: gpii-review4-staging
-    jenkins_tag: staging
-    ansible_inventory: stg
-    ansible_host_pattern: i-0028.tor1.inclusivedesign.ca
-    ansible_playbook: deploy_gpii-review4_staging.yml
+    name: gpii-review4-production
+    jenkins_tag: production
+    ansible_inventory: prd
+    ansible_host_pattern: tor1_gpii_docker_production
+    ansible_playbook: deploy_gpii-review4_production.yml
     jobs:
       - container-gpii-review4-all
 
@@ -41,14 +41,6 @@
     publishers:
       - email:
             recipients: idi-ops@lists.inclusivedesign.ca
-    triggers:
-      - reverse:
-          result: success
-          jobs:
-            - docker-idi-couchdb-latest
-            - docker-gpii-preferences-server-data-loader-review4
-            - docker-gpii-preferences-server-master
-            - docker-gpii-flow-manager-GPII-1245
     scm:
         - git:
             url: git@github.com:inclusive-design/ops.git
