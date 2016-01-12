@@ -1,0 +1,151 @@
+# Ansible plugin cannot be used used until this bug is fixed:
+# https://issues.jenkins-ci.org/browse/JENKINS-32384
+
+- defaults:
+    name: gpii-review4
+    jenkins_node: master
+    ssh_credential: f9c9b39c-070e-42ab-a810-3217654ac92c
+
+- project:
+    name: gpii-review4-staging
+    jenkins_tag: staging
+    ansible_inventory: stg
+    ansible_host_pattern: i-0028.tor1.inclusivedesign.ca
+    ansible_playbook: deploy_gpii-review4_staging.yml
+    jobs:
+      - container-gpii-review4-all
+
+- job-group:
+    name: container-gpii-review4-all
+    jobs:
+      - 'container-gpii-review4-{jenkins_tag}'
+      - 'container-gpii-review4-{jenkins_tag}-nginx'
+      - 'container-gpii-review4-{jenkins_tag}-couchdb'
+      - 'container-gpii-review4-{jenkins_tag}-preferences-server-data-loader'
+      - 'container-gpii-review4-{jenkins_tag}-preferences-server'
+      - 'container-gpii-review4-{jenkins_tag}-flow-manager'
+
+- wrapper:
+    name: deploy_credentials
+    wrappers:
+      - ssh-agent-credentials:
+          users:
+            - f9c9b39c-070e-42ab-a810-3217654ac92c
+
+- job-template:
+    name: 'container-gpii-review4-{jenkins_tag}'
+    project-type: 'multijob'
+    defaults: gpii-review4
+    concurrent: false
+    node: '{jenkins_node}'
+    publishers:
+      - email:
+            recipients: idi-ops@lists.inclusivedesign.ca
+    triggers:
+      - reverse:
+          result: success
+          jobs:
+            - docker-idi-couchdb-latest
+            - docker-gpii-preferences-server-data-loader-review4
+            - docker-gpii-preferences-server-master
+            - docker-gpii-flow-manager-GPII-1245
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops.git
+            credentials-id: 7ffafe1a-7ab2-4e9d-899c-5f068ad10b9c
+            skip-tag: true
+            submodule:
+              recursive: true
+            branches:
+                - master
+    builders:
+      - multijob:
+          name: Database
+          condition: SUCCESSFUL
+          projects:
+            - name: 'container-gpii-review4-{jenkins_tag}-couchdb'
+              predefined-parameters: parent_workspace=$WORKSPACE/ansible
+
+      - multijob:
+          name: Data load
+          condition: SUCCESSFUL
+          projects:
+            - name: 'container-gpii-review4-{jenkins_tag}-preferences-server-data-loader'
+              predefined-parameters: parent_workspace=$WORKSPACE/ansible
+
+      - multijob:
+          name: Preferences Server
+          condition: SUCCESSFUL
+          projects:
+            - name: 'container-gpii-review4-{jenkins_tag}-preferences-server'
+              predefined-parameters: parent_workspace=$WORKSPACE/ansible
+
+      - multijob:
+          name: Flow Manager
+          condition: SUCCESSFUL
+          projects:
+            - name: 'container-gpii-review4-{jenkins_tag}-flow-manager'
+              predefined-parameters: parent_workspace=$WORKSPACE/ansible
+
+      - multijob:
+          name: Load balancer
+          condition: SUCCESSFUL
+          projects:
+            - name: 'container-gpii-review4-{jenkins_tag}-nginx'
+              predefined-parameters: parent_workspace=$WORKSPACE/ansible
+
+- job-template:
+    name: 'container-gpii-review4-{jenkins_tag}-nginx'
+    description: Deploy Nginx reverse proxy endpoints'
+    defaults: gpii-review4
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - deploy_credentials
+    builders:
+      - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t nginx-common,nginx-reverse {ansible_playbook}'
+
+- job-template:
+    name: 'container-gpii-review4-{jenkins_tag}-couchdb'
+    description: Deploy CouchDB container'
+    defaults: gpii-review4
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - deploy_credentials
+    builders:
+      - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-couchdb {ansible_playbook}'
+
+- job-template:
+    name: 'container-gpii-review4-{jenkins_tag}-preferences-server-data-loader'
+    description: Load preferences data
+    defaults: gpii-review4
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - deploy_credentials
+    builders:
+      - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-dataloader {ansible_playbook}'
+
+- job-template:
+    name: 'container-gpii-review4-{jenkins_tag}-preferences-server'
+    description: Deploy Preferences Server container
+    defaults: gpii-review4
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - deploy_credentials
+    builders:
+      - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-prefserver {ansible_playbook}'
+
+- job-template:
+    name: 'container-gpii-review4-{jenkins_tag}-flow-manager'
+    description: Deploy Flow Manager container
+    defaults: gpii-review4
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - deploy_credentials
+    builders:
+      - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-flowmanager {ansible_playbook}'
+
