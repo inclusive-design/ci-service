@@ -44,15 +44,18 @@
     email_recipient: idi-ops@lists.inclusivedesign.ca
     jenkins_node: i-0027.tor1.inclusivedesign.ca
 
-- project:
-    name: gpii-universal-review4
-    jenkins_tag: review4
-    git_app_branch: review4
-    git_docker_branch: review4
-    nodejs_version: 0.10.41
-    docker_tag: review4
-    jobs:
-      - 'docker-gpii-universal-all'
+# This was not needed for review4, so commenting out for now. 
+# It should be removed after the review if it's not used.
+#
+#- project:
+#    name: gpii-universal-review4
+#    jenkins_tag: review4
+#    git_app_branch: review4
+#    git_docker_branch: review4
+#    nodejs_version: 0.10.41
+#    docker_tag: review4
+#    jobs:
+#      - 'docker-gpii-universal-all'
 
 - project:
     name: gpii-universal-master
