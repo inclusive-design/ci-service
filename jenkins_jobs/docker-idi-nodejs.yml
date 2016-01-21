@@ -36,6 +36,30 @@
       - 'docker-idi-nodejs-all'
 
 - project:
+    name: idi-nodejs-4.2.1
+    jenkins_tag: 4.2.1
+    git_branch: 4.2.1
+    docker_tag: 4.2.1
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
+    name: idi-nodejs-4.2.2
+    jenkins_tag: 4.2.2
+    git_branch: 4.2.2
+    docker_tag: 4.2.2
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
+    name: idi-nodejs-4.2.3
+    jenkins_tag: 4.2.3
+    git_branch: 4.2.3
+    docker_tag: 4.2.3
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
     name: idi-nodejs-4.2.4
     jenkins_tag: 4.2.4
     git_branch: 4.2.4
