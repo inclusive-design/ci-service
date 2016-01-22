@@ -56,7 +56,7 @@
     triggers:
       - github
       - pollurl:
-          cron: 'H * * * *'
+          cron: '0 2 * * *'
           urls:
             - url: 'https://github.com/docker-library/official-images/commits/master.atom'
               check-content:
