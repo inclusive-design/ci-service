@@ -92,7 +92,7 @@
 - job-template:
     defaults: gpii-flow-manager
     name: 'docker-gpii-flow-manager-{jenkins_tag}'
-    description: 'Builds, tests and pushes the GPII Universal Docker image'
+    description: 'Builds, tests and pushes the GPII Flow Manager Docker image'
     project-type: multijob
     concurrent: false
     node: '{jenkins_node}'

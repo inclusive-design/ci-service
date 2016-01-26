@@ -86,7 +86,7 @@
 - job-template:
     defaults: gpii-preferences-server-data-loader
     name: 'docker-gpii-preferences-server-data-loader-{jenkins_tag}'
-    description: 'Builds, tests and pushes the GPII Universal Docker image'
+    description: 'Builds, tests and pushes the GPII Preferences Server Docker image'
     project-type: multijob
     concurrent: false
     node: '{jenkins_node}'
