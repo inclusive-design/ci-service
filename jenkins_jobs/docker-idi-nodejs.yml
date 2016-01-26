@@ -3,7 +3,7 @@
 - defaults:
     name: idi-nodejs
     git_repo: https://github.com/idi-ops/docker-nodejs.git
-    git_branch: 0.10.36
+    git_branch: 4.2.6
     docker_username: inclusivedesign
     docker_image: nodejs
     docker_tag: latest
@@ -14,7 +14,7 @@
 - project:
     name: idi-nodejs-latest
     jenkins_tag: latest
-    git_branch: 0.10.36
+    git_branch: 4.2.6
     docker_tag: latest
     jobs:
       - 'docker-idi-nodejs-all'
@@ -36,12 +36,53 @@
       - 'docker-idi-nodejs-all'
 
 - project:
+    name: idi-nodejs-4.2.1
+    jenkins_tag: 4.2.1
+    git_branch: 4.2.1
+    docker_tag: 4.2.1
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
+    name: idi-nodejs-4.2.2
+    jenkins_tag: 4.2.2
+    git_branch: 4.2.2
+    docker_tag: 4.2.2
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
+    name: idi-nodejs-4.2.3
+    jenkins_tag: 4.2.3
+    git_branch: 4.2.3
+    docker_tag: 4.2.3
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
     name: idi-nodejs-4.2.4
     jenkins_tag: 4.2.4
     git_branch: 4.2.4
     docker_tag: 4.2.4
     jobs:
       - 'docker-idi-nodejs-all'
+
+- project:
+    name: idi-nodejs-4.2.5
+    jenkins_tag: 4.2.5
+    git_branch: 4.2.5
+    docker_tag: 4.2.5
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
+    name: idi-nodejs-4.2.6
+    jenkins_tag: 4.2.6
+    git_branch: 4.2.6
+    docker_tag: 4.2.6
+    jobs:
+      - 'docker-idi-nodejs-all'
+
 
 # WARNING: Be careful changing anything below.
 
