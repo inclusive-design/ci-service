@@ -7,7 +7,7 @@
             url: https://github.com/inclusive-design/websavvy
             skip-tag: true
             branches:
-                - gh-pages
+                - master
     triggers:
         - github
     publishers:
