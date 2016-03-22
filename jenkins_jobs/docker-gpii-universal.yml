@@ -36,7 +36,7 @@
     git_app_branch: master
     git_docker_repo: https://github.com/GPII/universal.git
     git_docker_branch: master
-    nodejs_version: 0.10.36
+    nodejs_version: 0.10.43
     docker_username: gpii
     docker_image: universal
     docker_tag: latest
@@ -62,7 +62,7 @@
     jenkins_tag: master
     git_app_branch: master
     git_docker_branch: master
-    nodejs_version: 0.10.36
+    nodejs_version: 0.10.43
     docker_tag: latest
     jobs:
       - 'docker-gpii-universal-all'
@@ -78,7 +78,7 @@
     git_app_branch: GPII-1245
     git_docker_repo: https://github.com/cindyli/universal.git
     git_docker_branch: GPII-1245
-    nodejs_version: 0.10.41
+    nodejs_version: 0.10.43
     docker_tag: GPII-1245
     jobs:
       - 'docker-gpii-universal-all'
