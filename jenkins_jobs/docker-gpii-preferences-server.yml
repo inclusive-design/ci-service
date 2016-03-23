@@ -36,7 +36,7 @@
     git_app_branch: master
     git_docker_repo: https://github.com/gpii-ops/docker-preferences-server.git
     git_docker_branch: master
-    nodejs_version: 0.10.36
+    nodejs_version: 0.10.43
     docker_username: gpii
     docker_image: preferences-server
     docker_tag: latest
@@ -49,7 +49,7 @@
     jenkins_tag: review4
     git_app_branch: review4
     git_docker_branch: review4
-    nodejs_version: 0.10.41
+    nodejs_version: 0.10.43
     docker_tag: review4
     jobs:
       - 'docker-gpii-preferences-server-all'
@@ -59,7 +59,7 @@
     jenkins_tag: master
     git_app_branch: master
     git_docker_branch: master
-    nodejs_version: 0.10.36
+    nodejs_version: 0.10.43
     docker_tag: latest
     jobs:
       - 'docker-gpii-preferences-server-all'

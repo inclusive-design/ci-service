@@ -32,7 +32,7 @@
     git_app_branch: master
     git_docker_repo: https://github.com/GPII/first-discovery-server
     git_docker_branch: master
-    nodejs_version: 4.2.4
+    nodejs_version: 4.4.0
     docker_username: gpii
     docker_image: first-discovery-server
     docker_tag: latest
@@ -45,7 +45,7 @@
     jenkins_tag: master
     git_app_branch: master
     git_docker_branch: master
-    nodejs_version: 0.10.36
+    nodejs_version: 0.10.43
     docker_tag: latest
     jobs:
       - 'docker-gpii-first-discovery-server-all'
