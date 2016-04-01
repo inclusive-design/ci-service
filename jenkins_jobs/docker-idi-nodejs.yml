@@ -14,7 +14,7 @@
 - project:
     name: idi-nodejs-latest
     jenkins_tag: latest
-    git_branch: 4.4.1
+    git_branch: 4.4.2
     docker_tag: latest
     jobs:
       - 'docker-idi-nodejs-all'
@@ -128,6 +128,14 @@
     jenkins_tag: 4.4.1
     git_branch: 4.4.1
     docker_tag: 4.4.1
+    jobs:
+      - 'docker-idi-nodejs-all'
+
+- project:
+    name: idi-nodejs-4.4.2
+    jenkins_tag: 4.4.2
+    git_branch: 4.4.2
+    docker_tag: 4.4.2
     jobs:
       - 'docker-idi-nodejs-all'
 
