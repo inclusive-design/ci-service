@@ -1,7 +1,7 @@
 - job:
-    name: '7e600377_courses.idrc.ocadu.ca'
+    name: 'website-courses.idrc.ocadu.ca'
     project-type: 'freestyle'
-    display-name: '7e600377_courses.idrc.ocadu.ca'
+    display-name: 'website-courses.idrc.ocadu.ca'
     scm:
         - git:
             url: https://github.com/inclusive-design/courses.idrc.git

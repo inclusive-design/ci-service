@@ -1,7 +1,7 @@
 - job:
-    name: '5d967a8f_handbook.floeproject.org'
+    name: 'website-handbook.floeproject.org'
     project-type: 'freestyle'
-    display-name: '5d967a8f_handbook.floeproject.org'
+    display-name: 'website-handbook.floeproject.org'
     scm:
         - git:
             url: https://github.com/fluid-project/docs-inclusive-learning.git

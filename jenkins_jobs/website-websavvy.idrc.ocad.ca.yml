@@ -1,7 +1,7 @@
 - job:
-    name: 'e19b0582_websavvy.idrc.ocad.ca'
+    name: 'website-websavvy.idrc.ocad.ca'
     project-type: 'freestyle'
-    display-name: 'e19b0582_websavvy.idrc.ocad.ca'
+    display-name: 'website-websavvy.idrc.ocad.ca'
     scm:
         - git:
             url: https://github.com/inclusive-design/websavvy
