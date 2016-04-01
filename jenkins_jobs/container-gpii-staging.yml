@@ -2,45 +2,54 @@
 # https://issues.jenkins-ci.org/browse/JENKINS-32384
 
 - defaults:
-    name: gpii-review4-production
+    name: gpii-staging
     jenkins_node: master
     ssh_credential: f9c9b39c-070e-42ab-a810-3217654ac92c
 
 - project:
-    name: gpii-review4-production
-    jenkins_tag: production
-    ansible_inventory: prd
-    ansible_host_pattern: tor1_gpii_docker_production
-    ansible_playbook: deploy_gpii-review4_production.yml
+    name: gpii-staging
+    jenkins_tag: staging
+    ansible_inventory: stg
+    ansible_host_pattern: tor1_gpii_docker_staging
+    ansible_playbook: deploy_gpii_staging.yml
     jobs:
-      - container-gpii-review4-production-all
+      - container-gpii-staging-all
 
 - job-group:
-    name: container-gpii-review4-production-all
+    name: container-gpii-staging-all
     jobs:
-      - 'container-gpii-review4-production'
-      - 'container-gpii-review4-production-nginx'
-      - 'container-gpii-review4-production-couchdb'
-      - 'container-gpii-review4-production-preferences-server-data-loader'
-      - 'container-gpii-review4-production-preferences-server'
-      - 'container-gpii-review4-production-flow-manager'
+      - 'container-gpii-staging'
+      - 'container-gpii-staging-couchdb'
+      - 'container-gpii-staging-preferences-server-data-loader'
+      - 'container-gpii-staging-preferences-server'
+      - 'container-gpii-staging-flow-manager'
+      - 'container-gpii-staging-qi-dashboard-backend'
 
 - wrapper:
-    name: deploy_credentials_production
+    name: deploy_credentials_staging
     wrappers:
       - ssh-agent-credentials:
           users:
             - f9c9b39c-070e-42ab-a810-3217654ac92c
 
 - job-template:
-    name: 'container-gpii-review4-production'
+    name: 'container-gpii-staging'
     project-type: 'multijob'
-    defaults: gpii-review4-production
+    defaults: gpii-staging
     concurrent: false
     node: '{jenkins_node}'
     publishers:
       - email:
             recipients: idi-ops@lists.inclusivedesign.ca
+    triggers:
+      - reverse:
+          result: success
+          jobs:
+            - docker-idi-couchdb-latest
+            - docker-gpii-preferences-server-data-loader-review4
+            - docker-gpii-preferences-server-master
+            - docker-gpii-flow-manager-GPII-1245
+            - docker-gpii-qi-dashboard-backend-master
     scm:
         - git:
             url: git@github.com:inclusive-design/ops.git
@@ -55,89 +64,89 @@
           name: Database
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-production-couchdb'
+            - name: 'container-gpii-staging-couchdb'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
       - multijob:
           name: Data load
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-production-preferences-server-data-loader'
+            - name: 'container-gpii-staging-preferences-server-data-loader'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
       - multijob:
           name: Preferences Server
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-production-preferences-server'
+            - name: 'container-gpii-staging-preferences-server'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
       - multijob:
           name: Flow Manager
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-production-flow-manager'
+            - name: 'container-gpii-staging-flow-manager'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
       - multijob:
-          name: Load balancer
+          name: QI Dashboard Backend
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-review4-production-nginx'
+            - name: 'container-gpii-staging-qi-dashboard-backend'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
 - job-template:
-    name: 'container-gpii-review4-production-nginx'
-    description: Deploy Nginx reverse proxy endpoints'
-    defaults: gpii-review4-production
-    node: '{jenkins_node}'
-    workspace: $parent_workspace
-    wrappers:
-      - deploy_credentials_production
-    builders:
-      - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t nginx-common,nginx-reverse {ansible_playbook}'
-
-- job-template:
-    name: 'container-gpii-review4-production-couchdb'
+    name: 'container-gpii-staging-couchdb'
     description: Deploy CouchDB container'
-    defaults: gpii-review4-production
+    defaults: gpii-staging
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - deploy_credentials_production
+      - deploy_credentials_staging
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-couchdb {ansible_playbook}'
 
 - job-template:
-    name: 'container-gpii-review4-production-preferences-server-data-loader'
+    name: 'container-gpii-staging-preferences-server-data-loader'
     description: Load preferences data
-    defaults: gpii-review4-production
+    defaults: gpii-staging
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - deploy_credentials_production
+      - deploy_credentials_staging
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-dataloader {ansible_playbook}'
 
 - job-template:
-    name: 'container-gpii-review4-production-preferences-server'
+    name: 'container-gpii-staging-preferences-server'
     description: Deploy Preferences Server container
-    defaults: gpii-review4-production
+    defaults: gpii-staging
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - deploy_credentials_production
+      - deploy_credentials_staging
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-prefserver {ansible_playbook}'
 
 - job-template:
-    name: 'container-gpii-review4-production-flow-manager'
+    name: 'container-gpii-staging-flow-manager'
     description: Deploy Flow Manager container
-    defaults: gpii-review4-production
+    defaults: gpii-staging
     node: '{jenkins_node}'
     workspace: $parent_workspace
     wrappers:
-      - deploy_credentials_production
+      - deploy_credentials_staging
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-flowmanager {ansible_playbook}'
+
+- job-template:
+    name: 'container-gpii-staging-qi-dashboard-backend'
+    description: Deploy QI Dashboard Backend container
+    defaults: gpii-staging
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - deploy_credentials_staging
+    builders:
+      - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-qi-dashboard-backend {ansible_playbook}'
 
