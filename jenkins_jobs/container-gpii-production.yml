@@ -25,6 +25,7 @@
       - 'container-gpii-production-preferences-server'
       - 'container-gpii-production-flow-manager'
       - 'container-gpii-production-qi-dashboard-backend'
+      - 'container-gpii-production-qi-dashboard-frontend'
 
 - wrapper:
     name: deploy_credentials_production
@@ -87,6 +88,13 @@
             - name: 'container-gpii-production-qi-dashboard-backend'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
+      - multijob:
+          name: QI Dashboard Frontend
+          condition: SUCCESSFUL
+          projects:
+            - name: 'container-gpii-production-qi-dashboard-frontend'
+              predefined-parameters: parent_workspace=$WORKSPACE/ansible
+              
 - job-template:
     name: 'container-gpii-production-couchdb'
     description: Deploy CouchDB container'
@@ -142,3 +150,13 @@
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-qi-dashboard-backend {ansible_playbook}'
 
+- job-template:
+    name: 'container-gpii-production-qi-dashboard-frontend'
+    description: Deploy QI Dashboard Frontend
+    defaults: gpii-production
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - deploy_credentials_production
+    builders:
+      - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-qi-dashboard-frontend {ansible_playbook}'

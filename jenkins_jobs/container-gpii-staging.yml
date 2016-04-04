@@ -24,6 +24,7 @@
       - 'container-gpii-staging-preferences-server'
       - 'container-gpii-staging-flow-manager'
       - 'container-gpii-staging-qi-dashboard-backend'
+      - 'container-gpii-staging-qi-dashboard-frontend'
 
 - wrapper:
     name: deploy_credentials_staging
@@ -50,6 +51,7 @@
             - docker-gpii-preferences-server-master
             - docker-gpii-flow-manager-GPII-1245
             - docker-gpii-qi-dashboard-backend-master
+            - docker-gpii-qi-dashboard-frontend-master
     scm:
         - git:
             url: git@github.com:inclusive-design/ops.git
@@ -93,6 +95,13 @@
           condition: SUCCESSFUL
           projects:
             - name: 'container-gpii-staging-qi-dashboard-backend'
+              predefined-parameters: parent_workspace=$WORKSPACE/ansible
+
+      - multijob:
+          name: QI Dashboard Frontend
+          condition: SUCCESSFUL
+          projects:
+            - name: 'container-gpii-staging-qi-dashboard-frontend'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
 - job-template:
@@ -150,3 +159,13 @@
     builders:
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-qi-dashboard-backend {ansible_playbook}'
 
+- job-template:
+    name: 'container-gpii-staging-qi-dashboard-frontend'
+    description: Deploy QI Dashboard Frontend container
+    defaults: gpii-staging
+    node: '{jenkins_node}'
+    workspace: $parent_workspace
+    wrappers:
+      - deploy_credentials_staging
+    builders:
+      - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-qi-dashboard-frontend {ansible_playbook}'
