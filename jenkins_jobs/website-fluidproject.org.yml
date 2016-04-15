@@ -1,0 +1,23 @@
+- job:
+    name: 'website-fluidproject.org'
+    project-type: 'freestyle'
+    display-name: 'website-fluidproject.org'
+    scm:
+        - git:
+            url: https://github.com/fluid-project/fluidproject.org.git
+            skip-tag: true
+            branches:
+                - gh-pages
+    triggers:
+        - github
+    publishers:
+      - email:
+            recipients: idi-ops@lists.inclusivedesign.ca
+      - ssh:
+            site: '87218b57_fluidproject.org'
+            source: '**'
+            target: '/srv/www/87218b57'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
+

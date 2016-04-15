@@ -1,0 +1,23 @@
+- job:
+    name: 'website-floeproject.org'
+    project-type: 'freestyle'
+    display-name: 'website-floeproject.org'
+    scm:
+        - git:
+            url: https://github.com/fluid-project/floeproject.org.git
+            skip-tag: true
+            branches:
+                - gh-pages
+    triggers:
+        - github
+    publishers:
+      - email:
+            recipients: idi-ops@lists.inclusivedesign.ca
+      - ssh:
+            site: 'a5242a87_floeproject.org'
+            source: '**'
+            target: '/srv/www/a5242a87'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
+
