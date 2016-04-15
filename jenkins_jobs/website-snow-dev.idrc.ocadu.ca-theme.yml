@@ -1,7 +1,7 @@
 - job:
-    name: 'website-snow-dev.idrc.ocad.ca'
+    name: 'website-snow-dev.idrc.ocad.ca-theme'
     project-type: 'freestyle'
-    display-name: 'website-snow-dev.idrc.ocad.ca'
+    display-name: 'website-snow-dev.idrc.ocad.ca-theme'
     scm:
         - git:
             url: https://github.com/inclusive-design/snow-2016.git
