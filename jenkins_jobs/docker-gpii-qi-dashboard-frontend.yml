@@ -41,7 +41,7 @@
     docker_image: qi-dashboard-frontend
     docker_tag: latest
     build_timeout: 30
-    email_recipient: idi-ops@lists.inclusivedesign.ca
+    email_recipient: ops-notifications@lists.inclusivedesign.ca
     jenkins_node: i-0027.tor1.inclusivedesign.ca
 
 - project:

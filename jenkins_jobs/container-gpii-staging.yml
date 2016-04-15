@@ -41,7 +41,7 @@
     node: '{jenkins_node}'
     publishers:
       - email:
-            recipients: idi-ops@lists.inclusivedesign.ca
+            recipients: ops-notifications@lists.inclusivedesign.ca
     triggers:
       - reverse:
           result: success

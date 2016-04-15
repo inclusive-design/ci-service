@@ -22,4 +22,4 @@
 
     publishers:
       - email:
-          recipients: idi-ops@lists.inclusivedesign.ca
+          recipients: ops-notifications@lists.inclusivedesign.ca
