@@ -1,0 +1,23 @@
+- job:
+    name: 'website-snow-dev.idrc.ocad.ca-theme'
+    project-type: 'freestyle'
+    display-name: 'website-snow-dev.idrc.ocad.ca-theme'
+    scm:
+        - git:
+            url: https://github.com/inclusive-design/snow-2016.git
+            skip-tag: true
+            branches:
+                - master
+    triggers:
+        - github
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
+      - ssh:
+            site: 'afe0ab1f_snow-dev.idrc.ocadu.ca'
+            source: '**'
+            target: '/srv/www/afe0ab1f/wp-content/themes/snow-theme'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
+
