@@ -42,7 +42,7 @@
     node: '{jenkins_node}'
     publishers:
       - email:
-            recipients: idi-ops@lists.inclusivedesign.ca
+            recipients: ops-notifications@lists.inclusivedesign.ca
     scm:
         - git:
             url: git@github.com:inclusive-design/ops.git

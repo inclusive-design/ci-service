@@ -12,7 +12,7 @@
         - github
     publishers:
       - email:
-            recipients: idi-ops@lists.inclusivedesign.ca
+            recipients: ops-notifications@lists.inclusivedesign.ca
       - ssh:
             site: '87218b57_fluidproject.org'
             source: '**'
