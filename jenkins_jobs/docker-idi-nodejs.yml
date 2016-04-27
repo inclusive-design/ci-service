@@ -155,6 +155,14 @@
     jobs:
       - 'docker-idi-nodejs-all'
 
+- project:
+    name: idi-nodejs-6.0.0
+    jenkins_tag: 6.0.0
+    git_branch: 6.0.0
+    docker_tag: 6.0.0
+    jobs:
+      - 'docker-idi-nodejs-all'
+
 
 # WARNING: Be careful changing anything below.
 
