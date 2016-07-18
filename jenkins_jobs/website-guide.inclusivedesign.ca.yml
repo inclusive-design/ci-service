@@ -1,0 +1,26 @@
+- job:
+    name: 'website-guide.inclusivedesign.ca'
+    project-type: 'freestyle'
+    display-name: 'website-guide.inclusivedesign.ca'
+    scm:
+        - git:
+            url: https://github.com/inclusive-design/guide.inclusivedesign.ca.git
+            skip-tag: true
+            branches:
+                - master
+    triggers:
+        - github
+    builders:
+      - shell: npm install && docpad generate --env static
+
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
+      - ssh:
+            site: 'c6d709cc_guide.inclusivedesign.ca'
+            source: 'out/**'
+            target: '/srv/www/c6d709cc'
+            remove-prefix: 'out'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
