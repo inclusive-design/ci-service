@@ -157,5 +157,5 @@
       - gpii-qi-dashboard-frontend-docker-push
     builders:
       - critical-block-start
-      - shell: docker push -f {docker_username}/{docker_image}:{docker_tag}
+      - shell: docker push {docker_username}/{docker_image}:{docker_tag}
       - critical-block-end
