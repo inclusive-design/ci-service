@@ -124,4 +124,4 @@
     node: '{jenkins_node}'
     workspace: $parent_workspace
     builders:
-      - shell: docker push -f {docker_username}/{docker_image}:{docker_tag}
+      - shell: docker push {docker_username}/{docker_image}:{docker_tag}
