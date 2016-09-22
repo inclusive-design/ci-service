@@ -32,9 +32,9 @@
 
 - defaults:
     name: gpii-qi-dashboard-frontend
-    git_app_repo: https://github.com/waharnum/qi-dashboard-frontend-demo.git
+    git_app_repo: https://github.com/avtar/gpii-qi-dashboard-frontend.git
     git_app_branch: master
-    git_docker_repo: https://github.com/waharnum/qi-dashboard-frontend-demo.git
+    git_docker_repo: https://github.com/avtar/gpii-qi-dashboard-frontend.git
     git_docker_branch: master
     nodejs_version: 4.4.1
     docker_username: gpii
