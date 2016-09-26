@@ -36,7 +36,7 @@
     git_app_branch: master
     git_docker_repo: https://github.com/avtar/gpii-qi-dashboard-frontend.git
     git_docker_branch: master
-    nodejs_version: 4.4.1
+    nodejs_version: lts
     docker_username: gpii
     docker_image: qi-dashboard-frontend
     docker_tag: latest
@@ -49,7 +49,7 @@
     jenkins_tag: master
     git_app_branch: master
     git_docker_branch: master
-    nodejs_version: 4.4.1
+    nodejs_version: lts
     docker_tag: latest
     jobs:
       - 'docker-gpii-qi-dashboard-frontend-all'
