@@ -7,7 +7,7 @@
             url: https://github.com/fluid-project/fluidproject.org.git
             skip-tag: true
             branches:
-                - master
+                - gh-pages
     triggers:
         - github
     publishers:
