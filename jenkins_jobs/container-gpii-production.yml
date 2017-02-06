@@ -10,8 +10,8 @@
     name: gpii-production
     jenkins_tag: production
     ansible_inventory: prd
-    ansible_host_pattern: tor1_gpii_docker_production
-    ansible_playbook: deploy_gpii_production.yml
+    ansible_host_pattern: tor1_gpii_ci_docker
+    ansible_playbook: deploy_containers_gpii_prd.yml
     jobs:
       - container-gpii-production-all
 

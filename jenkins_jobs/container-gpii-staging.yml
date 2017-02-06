@@ -10,8 +10,8 @@
     name: gpii-staging
     jenkins_tag: staging
     ansible_inventory: stg
-    ansible_host_pattern: tor1_gpii_docker_staging
-    ansible_playbook: deploy_gpii_staging.yml
+    ansible_host_pattern: tor1_gpii_ci_docker
+    ansible_playbook: deploy_containers_gpii_stg.yml
     jobs:
       - container-gpii-staging-all
 
