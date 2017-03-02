@@ -15,9 +15,8 @@
             recipients: ops-notifications@lists.inclusivedesign.ca
       - ssh:
             site: 'e7b4f940_sojustrepairit.org'
-            source: 'out/**'
+            source: '**'
             target: '/srv/www/e7b4f940'
-            remove-prefix: 'out'
             fail-on-error: true
             use-pty: true
             timeout: 180000
