@@ -1,0 +1,23 @@
+- job:
+    name: 'website-sojustrepairit.org'
+    project-type: 'freestyle'
+    display-name: 'website-sojustrepairit.org'
+    scm:
+        - git:
+            url: https://github.com/waharnum/repairKit-site
+            skip-tag: true
+            branches:
+                - master
+    triggers:
+        - github
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
+      - ssh:
+            site: 'e7b4f940_sojustrepairit.org'
+            source: 'out/**'
+            target: '/srv/www/e7b4f940'
+            remove-prefix: 'out'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
