@@ -32,10 +32,10 @@
 
 - defaults:
     name: gpii-qi-dashboard-frontend
-    git_app_repo: https://github.com/avtar/gpii-qi-dashboard-frontend.git
-    git_app_branch: master
-    git_docker_repo: https://github.com/avtar/gpii-qi-dashboard-frontend.git
-    git_docker_branch: master
+    git_app_repo: https://github.com/cindyli/qi-dashboard-frontend-demo.git
+    git_app_branch: GPII-2204
+    git_docker_repo: https://github.com/cindyli/qi-dashboard-frontend-demo.git
+    git_docker_branch: GPII-2204
     nodejs_version: lts
     docker_username: gpii
     docker_image: qi-dashboard-frontend
@@ -46,9 +46,9 @@
 
 - project:
     name: gpii-qi-dashboard-frontend-master
-    jenkins_tag: master
-    git_app_branch: master
-    git_docker_branch: master
+    jenkins_tag: GPII-2204
+    git_app_branch: GPII-2204
+    git_docker_branch: GPII-2204
     nodejs_version: lts
     docker_tag: latest
     jobs:
