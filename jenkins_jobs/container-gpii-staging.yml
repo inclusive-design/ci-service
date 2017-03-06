@@ -51,7 +51,7 @@
             - docker-gpii-preferences-server-master
             - docker-gpii-flow-manager-GPII-1245
             - docker-gpii-qi-dashboard-backend-master
-            - docker-gpii-qi-dashboard-frontend-master
+            - docker-gpii-qi-dashboard-frontend-GPII-2204
     scm:
         - git:
             url: git@github.com:inclusive-design/ops.git
