@@ -1,0 +1,22 @@
+- job:
+    name: 'ansible-ansible'
+    project-type: 'freestyle'
+    display-name: 'ansible-ansible'
+    scm:
+        - git:
+            url: https://github.com/idi-ops/ansible-ansible.git
+            skip-tag: true
+            branches:
+                - master
+    triggers:
+        - github
+    builders:
+        - shell: >
+            virtualenv venv && \
+            . venv/bin/activate && \
+            pip install -r requirements.txt && \
+            molecule --debug test
+
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
