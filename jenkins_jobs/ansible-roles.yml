@@ -1,10 +1,16 @@
-- job:
-    name: 'ansible-ansible'
+- project:
+    name: ansible-roles
+    jobs:
+        - 'ansible-ansible':
+            name: ansible-ansible
+
+- job-template:
+    name: {name}
     project-type: 'freestyle'
-    display-name: 'ansible-ansible'
+    display-name: {name}
     scm:
         - git:
-            url: https://github.com/idi-ops/ansible-ansible.git
+            url: https://github.com/idi-ops/{name}.git
             skip-tag: true
             branches:
                 - master
@@ -22,9 +28,10 @@
         # minimally opinionated about which version gets installed.
         #
         # - /tmp on Jenkins node h-0005.tor1.inclusivedesign.ca is mounted
-        # noexec, which prevents pycyrpto from running autoconf (see
-        # https://bugs.launchpad.net/pycrypto/+bug/1294670). So we make a local
-        # tmpdir and use it when installing from requirements.txt.
+        # noexec, which prevents pycyrpto (in requirements.txt) from running
+        # autoconf (see https://bugs.launchpad.net/pycrypto/+bug/1294670). So
+        # we make a local tmpdir and use it when installing from
+        # requirements.txt.
         #
         # - This is a dubious amount of work to do in a build one-liner. I
         # considered moving to Tox but decided to stop here. If you are
