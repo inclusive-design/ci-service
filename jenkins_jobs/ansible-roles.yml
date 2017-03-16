@@ -22,7 +22,7 @@
     triggers:
         - github
         - pollscm:
-            cron: "*/5 * * * *"
+            cron: "H/5 * * * *"
         - timed: '@daily'
 
     node: h-0005.tor1.inclusivedesign.ca
