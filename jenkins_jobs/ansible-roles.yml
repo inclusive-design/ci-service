@@ -1,16 +1,21 @@
 - project:
     name: ansible-roles
     jobs:
-        - 'ansible-ansible':
-            name: ansible-ansible
+        - '{role}':
+            role: ansible-ansible
+        - '{role}':
+            role: ansible-collectd
+        - '{role}':
+            role: ansible-grafana
+        - '{role}':
+            role: ansible-influxdb
 
 - job-template:
-    name: {name}
+    name: '{role}'
     project-type: 'freestyle'
-    display-name: {name}
     scm:
         - git:
-            url: https://github.com/idi-ops/{name}.git
+            url: 'https://github.com/idi-ops/{role}.git'
             skip-tag: true
             branches:
                 - master
