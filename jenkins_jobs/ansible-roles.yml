@@ -21,6 +21,7 @@
                 - master
     triggers:
         - github
+        - timed: '@daily'
     node: h-0005.tor1.inclusivedesign.ca
     builders:
         # Several things going on here:
