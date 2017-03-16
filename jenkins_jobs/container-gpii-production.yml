@@ -94,7 +94,7 @@
           projects:
             - name: 'container-gpii-production-qi-dashboard-frontend'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
-              
+
 - job-template:
     name: 'container-gpii-production-couchdb'
     description: Deploy CouchDB container'
