@@ -1,0 +1,23 @@
+- job:
+    name: 'website-bigidea.one-theme'
+    project-type: 'freestyle'
+    display-name: 'website-bigidea.one-theme'
+    scm:
+        - git:
+            url: https://github.com/jhung/wp-a11y-theme.git
+            skip-tag: true
+            branches:
+                - foundation
+    triggers:
+        - github
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
+      - ssh:
+            site: '66a41b03_bigidea.one'
+            source: '**'
+            target: '/srv/www/66a41b03/wp-content/themes/wp-a11y-theme'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
+
