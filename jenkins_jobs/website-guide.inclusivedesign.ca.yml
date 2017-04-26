@@ -11,7 +11,7 @@
     triggers:
         - github
     builders:
-      - shell: npm install && docpad generate --env static
+      - shell: npm install && $(npm bin)/docpad generate --env static
 
     publishers:
       - email:
