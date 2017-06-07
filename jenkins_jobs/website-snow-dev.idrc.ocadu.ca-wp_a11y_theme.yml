@@ -1,13 +1,13 @@
 - job:
-    name: 'website-snow-dev.idrc.ocad.ca-theme'
+    name: 'website-snow-dev.idrc.ocad.ca-wp_a11y_theme'
     project-type: 'freestyle'
-    display-name: 'website-snow-dev.idrc.ocad.ca-theme'
+    display-name: 'website-snow-dev.idrc.ocad.ca-wp_a11y_theme'
     scm:
         - git:
-            url: https://github.com/inclusive-design/snow-2016.git
+            url: https://github.com/jhung/wp-a11y-theme
             skip-tag: true
             branches:
-                - master
+                - foundation
     triggers:
         - github
     publishers:
@@ -16,7 +16,7 @@
       - ssh:
             site: 'afe0ab1f_snow-dev.idrc.ocadu.ca'
             source: '**'
-            target: '/srv/www/afe0ab1f/wp-content/themes/snow-theme'
+            target: '/srv/www/afe0ab1f/wp-content/themes/wp-a11y-theme'
             fail-on-error: true
             use-pty: true
             timeout: 180000
