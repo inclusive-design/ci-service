@@ -8,6 +8,8 @@
         - '{role}':
             role: ansible-grafana
         - '{role}':
+            role: ansible-gpii-ci-worker
+        - '{role}':
             role: ansible-influxdb
 
 - job-template:
