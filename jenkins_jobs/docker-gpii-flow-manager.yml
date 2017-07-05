@@ -36,7 +36,6 @@
     git_app_branch: master
     git_docker_repo: https://github.com/gpii-ops/docker-flow-manager
     git_docker_branch: master
-    nodejs_version: 0.10.45
     docker_username: gpii
     docker_image: flow-manager
     docker_tag: latest
@@ -49,24 +48,7 @@
     jenkins_tag: master
     git_app_branch: master
     git_docker_branch: master
-    nodejs_version: 0.10.45
     docker_tag: latest
-    jobs:
-      - 'docker-gpii-flow-manager-all'
-
-# Builds a version of the flow manager container using cindyli's GPII-1245 branch
-# that includes the security work and security UI necessary for review4
-# this can be removed at the point GPII-1245 is merged into master
-
-- project:
-    name: gpii-flow-manager-GPII-1245
-    jenkins_tag: GPII-1245
-    git_app_repo: https://github.com/cindyli/universal.git
-    git_docker_repo: https://github.com/gpii-ops/docker-flow-manager
-    git_app_branch: GPII-1245
-    git_docker_branch: GPII-1245
-    nodejs_version: 0.10.45
-    docker_tag: GPII-1245
     jobs:
       - 'docker-gpii-flow-manager-all'
 
@@ -176,8 +158,6 @@
 #    builders:
 #      - shell: docker run --rm --entrypoint=/bin/bash -i {docker_username}/{docker_image}:{docker_tag} node --eval "console.log('OK');"
 
-# Tag operation is forced in case they've happened in the past from a previous build (no-op)
-# Push is forced otherwise a prompt is displayed asking if really want to publish to public registry
 - job-template:
     defaults: gpii-flow-manager
     name: 'docker-gpii-flow-manager-{jenkins_tag}-release'
