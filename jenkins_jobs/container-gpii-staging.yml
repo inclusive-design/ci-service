@@ -20,7 +20,7 @@
     jobs:
       - 'container-gpii-staging'
       - 'container-gpii-staging-couchdb'
-      - 'container-gpii-staging-preferences-server-data-loader'
+      - 'container-gpii-staging-preferences-dataloader'
       - 'container-gpii-staging-preferences-server'
       - 'container-gpii-staging-flow-manager'
       - 'container-gpii-staging-qi-dashboard-backend'
@@ -47,9 +47,9 @@
           result: success
           jobs:
             - docker-idi-couchdb-latest
-            - docker-gpii-preferences-server-data-loader-review4
+            - docker-gpii-preferences-dataloader-master
             - docker-gpii-preferences-server-master
-            - docker-gpii-flow-manager-GPII-1245
+            - docker-gpii-flow-manager-master
             - docker-gpii-qi-dashboard-backend-master
             - docker-gpii-qi-dashboard-frontend-GPII-2204
     scm:
@@ -73,7 +73,7 @@
           name: Data load
           condition: SUCCESSFUL
           projects:
-            - name: 'container-gpii-staging-preferences-server-data-loader'
+            - name: 'container-gpii-staging-preferences-dataloader'
               predefined-parameters: parent_workspace=$WORKSPACE/ansible
 
       - multijob:
@@ -116,7 +116,7 @@
       - shell: '/usr/bin/ansible-playbook -i inventory/{ansible_inventory} -l {ansible_host_pattern} -t container-couchdb {ansible_playbook}'
 
 - job-template:
-    name: 'container-gpii-staging-preferences-server-data-loader'
+    name: 'container-gpii-staging-preferences-dataloader'
     description: Load preferences data
     defaults: gpii-staging
     node: '{jenkins_node}'
