@@ -12,6 +12,8 @@
         - '{role}':
             role: ansible-influxdb
         - '{role}':
+            role: ansible-nginx-common
+        - '{role}':
             role: ansible-prometheus-tests
 
 - job-template:
