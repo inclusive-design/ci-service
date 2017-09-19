@@ -52,12 +52,16 @@
         # considered moving to Tox but decided to stop here. If you are
         # thinking of adding more steps here, please consider instead moving to
         # Tox (or a Makefile or a shell script or something).
+        #
+        # ansible-lint is also upgraded due to https://github.com/willthames/ansible-lint/issues/278
+        # fix proposed to molecule https://github.com/metacloud/molecule/pull/957
         - shell: >
             virtualenv venv &&
             . venv/bin/activate &&
             pip install "pip > 1.4.1" &&
             mkdir -p pip-tmp &&
             TMPDIR=pip-tmp pip install -r requirements.txt &&
+            pip install --upgrade ansible-lint
             molecule --debug test
 
     publishers:
