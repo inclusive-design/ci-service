@@ -53,15 +53,19 @@
         # thinking of adding more steps here, please consider instead moving to
         # Tox (or a Makefile or a shell script or something).
         #
-        # ansible-lint is also upgraded due to https://github.com/willthames/ansible-lint/issues/278
-        # fix proposed to molecule https://github.com/metacloud/molecule/pull/957
+        # (XXX)
+        # Pinning Ansible here in the most explicit way because some dependencies
+        # break with version 2.4 (testinfra, molecule, ansible-lint). This usually
+        # is fixed after a few days and then the `pip install ansible` line should
+        # be removed.
+        # (XXX)
         - shell: >
             virtualenv venv &&
             . venv/bin/activate &&
             pip install "pip > 1.4.1" &&
             mkdir -p pip-tmp &&
             TMPDIR=pip-tmp pip install -r requirements.txt &&
-            pip install --upgrade ansible-lint &&
+            pip install ansible==2.3.2.0 &&
             molecule --debug test
 
     publishers:
