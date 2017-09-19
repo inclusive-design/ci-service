@@ -61,7 +61,7 @@
             pip install "pip > 1.4.1" &&
             mkdir -p pip-tmp &&
             TMPDIR=pip-tmp pip install -r requirements.txt &&
-            pip install --upgrade ansible-lint
+            pip install --upgrade ansible-lint &&
             molecule --debug test
 
     publishers:
