@@ -52,20 +52,12 @@
         # considered moving to Tox but decided to stop here. If you are
         # thinking of adding more steps here, please consider instead moving to
         # Tox (or a Makefile or a shell script or something).
-        #
-        # (XXX)
-        # Pinning Ansible here in the most explicit way because some dependencies
-        # break with version 2.4 (testinfra, molecule, ansible-lint). This usually
-        # is fixed after a few days and then the `pip install ansible` line should
-        # be removed.
-        # (XXX)
         - shell: >
             virtualenv venv &&
             . venv/bin/activate &&
             pip install "pip > 1.4.1" &&
             mkdir -p pip-tmp &&
             TMPDIR=pip-tmp pip install -r requirements.txt &&
-            pip install ansible==2.3.2.0 &&
             molecule --debug test
 
     publishers:
