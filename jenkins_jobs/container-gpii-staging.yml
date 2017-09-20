@@ -41,7 +41,7 @@
     node: '{jenkins_node}'
     publishers:
       - email:
-            recipients: ops-notifications@lists.inclusivedesign.ca
+            recipients: gpii-infra-notifications@lists.gpii.net
     triggers:
       - reverse:
           result: success
