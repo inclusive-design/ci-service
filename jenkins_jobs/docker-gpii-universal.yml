@@ -41,7 +41,7 @@
     docker_image: universal
     docker_tag: latest
     build_timeout: 30
-    email_recipient: ops-notifications@lists.inclusivedesign.ca
+    email_recipient: gpii-infra-notifications@lists.gpii.net
     jenkins_node: i-0027.tor1.inclusivedesign.ca
 
 - project:
