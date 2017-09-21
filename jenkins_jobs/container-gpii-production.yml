@@ -44,7 +44,7 @@
             recipients: gpii-infra-notifications@lists.gpii.net
     scm:
         - git:
-            url: git@github.com:inclusive-design/ops.git
+            url: git@github.com:inclusive-design/ops-shared.git
             credentials-id: 7ffafe1a-7ab2-4e9d-899c-5f068ad10b9c
             skip-tag: true
             submodule:
