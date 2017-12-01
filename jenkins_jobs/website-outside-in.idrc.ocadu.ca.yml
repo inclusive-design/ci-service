@@ -1,0 +1,23 @@
+- job:
+    name: 'website-outside-in.idrc.ocadu.ca'
+    project-type: 'freestyle'
+    display-name: 'website-outside-in.idrc.ocadu.ca'
+    scm:
+        - git:
+            url: https://github.com/inclusive-design/outside-in.git
+            skip-tag: true
+            branches:
+                - gh-pages
+    triggers:
+        - github
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
+      - ssh:
+            site: 'fef28bcd_outside-in.idrc.ocadu.ca'
+            source: '**'
+            target: '/srv/www/fef28bcd'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
+
