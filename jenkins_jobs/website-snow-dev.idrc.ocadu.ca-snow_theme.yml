@@ -6,8 +6,6 @@
         - git:
             url: https://github.com/grrrero/snow-theme
             skip-tag: true
-            branches:
-                - master
     triggers:
         - github
     publishers:
