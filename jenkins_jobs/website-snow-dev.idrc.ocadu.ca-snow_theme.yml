@@ -4,7 +4,7 @@
     display-name: 'website-snow-dev.idrc.ocad.ca-snow_theme'
     scm:
         - git:
-            url: https://github.com/jhung/snow-theme
+            url: https://github.com/grrrero/snow-theme
             skip-tag: true
             branches:
                 - master
