@@ -7,7 +7,7 @@
             url: https://github.com/fluid-project/infusion-docs.git
             skip-tag: true
             branches:
-                - gh-pages
+                - deploy
     triggers:
         - github
     publishers:
