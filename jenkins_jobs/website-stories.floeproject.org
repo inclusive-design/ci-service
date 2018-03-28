@@ -1,0 +1,26 @@
+- job:
+    name: 'website-stories.flodproject.org'
+    project-type: 'freestyle'
+    display-name: 'website-stories.flodproject.org'
+    scm:
+        - git:
+            url: https://github.com/BlueSlug/sjrk-story-telling.git
+            skip-tag: true
+            branches:
+                - SJRK-49
+    triggers:
+        - github
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            npm install
+    publishers:
+      - email:
+            recipients: gtirloni@ocadu.ca
+      - ssh:
+            site: 'f92c97d2_stories.floeproject.org'
+            source: '**'
+            target: '/srv/www/f92c97d2'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
