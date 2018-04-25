@@ -19,7 +19,7 @@
       - ssh:
             site: 'c6d709cc_guide.inclusivedesign.ca'
             source: 'out/**'
-            target: '/srv/www/c6d709cc'
+            target: '/var/www/c6d709cc'
             remove-prefix: 'out'
             fail-on-error: true
             use-pty: true

@@ -14,7 +14,7 @@
       - ssh:
             site: 'afe0ab1f_snow-dev.idrc.ocadu.ca'
             source: '**'
-            target: '/srv/www/afe0ab1f/wp-content/themes/snow-theme'
+            target: '/var/www/afe0ab1f/wp-content/themes/snow-theme'
             fail-on-error: true
             use-pty: true
             timeout: 180000

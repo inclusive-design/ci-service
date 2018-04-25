@@ -20,7 +20,7 @@
       - ssh:
             site: 'f92c97d2_stories.floeproject.org'
             source: '**'
-            target: '/srv/www/f92c97d2'
+            target: '/var/www/f92c97d2'
             fail-on-error: true
             use-pty: true
             timeout: 180000

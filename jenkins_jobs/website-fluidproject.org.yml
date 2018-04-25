@@ -16,7 +16,7 @@
       - ssh:
             site: '87218b57_fluidproject.org'
             source: '**'
-            target: '/srv/www/87218b57'
+            target: '/var/www/87218b57'
             fail-on-error: true
             use-pty: true
             timeout: 180000

@@ -16,7 +16,7 @@
       - ssh:
             site: '5d967a8f_handbook.floeproject.org'
             source: '**'
-            target: '/srv/www/5d967a8f'
+            target: '/var/www/5d967a8f'
             fail-on-error: true
             use-pty: true
             timeout: 180000

@@ -16,7 +16,7 @@
       - ssh:
             site: 'e7b4f940_sojustrepairit.org'
             source: '**'
-            target: '/srv/www/e7b4f940'
+            target: '/var/www/e7b4f940'
             fail-on-error: true
             use-pty: true
             timeout: 180000

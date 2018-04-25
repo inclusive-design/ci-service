@@ -16,7 +16,7 @@
       - ssh:
             site: 'fef28bcd_outside-in.idrc.ocadu.ca'
             source: '**'
-            target: '/srv/www/fef28bcd'
+            target: '/var/www/fef28bcd'
             fail-on-error: true
             use-pty: true
             timeout: 180000

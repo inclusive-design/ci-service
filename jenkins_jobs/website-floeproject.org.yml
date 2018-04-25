@@ -16,7 +16,7 @@
       - ssh:
             site: 'a5242a87_floeproject.org'
             source: '**'
-            target: '/srv/www/a5242a87'
+            target: '/var/www/a5242a87'
             fail-on-error: true
             use-pty: true
             timeout: 180000

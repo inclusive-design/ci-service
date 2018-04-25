@@ -16,7 +16,7 @@
       - ssh:
             site: '618187c9_inclusivedesign.ca'
             source: '**'
-            target: '/srv/www/618187c9/wp-content/themes/idi-theme'
+            target: '/var/www/618187c9/wp-content/themes/idi-theme'
             fail-on-error: true
             use-pty: true
             timeout: 180000

@@ -16,7 +16,7 @@
       - ssh:
             site: '7e600377_courses.idrc.ocadu.ca'
             source: '**'
-            target: '/srv/www/7e600377'
+            target: '/var/www/7e600377'
             fail-on-error: true
             use-pty: true
             timeout: 180000
