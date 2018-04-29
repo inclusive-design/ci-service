@@ -7,17 +7,23 @@
             url: https://github.com/fluid-project/fluidproject.org.git
             skip-tag: true
             branches:
-                - gh-pages
+                - master
     triggers:
         - github
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            npm install
+            npm install docpad
+            $(npm bin)/docpad generate --env static
     publishers:
       - email:
             recipients: ops-notifications@lists.inclusivedesign.ca
       - ssh:
             site: '87218b57_fluidproject.org'
-            source: '**'
+            source: 'out/**'
             target: '/var/www/87218b57'
+            remove-prefix: 'out'
             fail-on-error: true
             use-pty: true
             timeout: 180000
-
