@@ -1,0 +1,22 @@
+- job:
+    name: 'website-cities.inclusivedesign.ca'
+    project-type: 'freestyle'
+    display-name: 'website-cities.inclusivedesign.ca'
+    scm:
+        - git:
+            url: https://github.com/grrrero/inclusivecities
+            skip-tag: true
+            branches:
+                - CITY-1
+    triggers:
+        - github
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
+      - ssh:
+            site: '43D61432_cities.inclusivedesign.ca'
+            source: '**'
+            target: '/var/www/43D61432'
+            fail-on-error: true
+            use-pty: true
+            timeout: 180000
