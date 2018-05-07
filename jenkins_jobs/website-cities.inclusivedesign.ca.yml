@@ -4,10 +4,10 @@
     display-name: 'website-cities.inclusivedesign.ca'
     scm:
         - git:
-            url: https://github.com/grrrero/inclusivecities
+            url: https://github.com/inclusive-design/website-cities
             skip-tag: true
             branches:
-                - CITY-1
+                - master
     triggers:
         - github
     publishers:
