@@ -1,0 +1,36 @@
+- job:
+    node: i-0033.tor1.inclusivedesign.ca
+    name: stack-stories.floeproject.org
+    project-type: freestyle
+    display-name: stack-stories.floeproject.org
+    scm:
+        - git:
+            url: https://github.com/waharnum/sjrk-story-telling-server.git
+            skip-tag: true
+            branches:
+                - SJRK-56-learningReflections
+    triggers:
+        - github
+        - reverse:
+            jobs: stack-stories.floeproject.org-nightly-cleanup
+            result: success
+    properties:
+      - inject:
+          properties-content: |
+            PROJECT_ID=f92c97d2
+            PROJECT_HOME=/srv/$PROJECT_ID
+            APP_SERVER_PORT=38086
+            APP_SERVER_UPLOADS_DIRECTORY=$PROJECT_HOME/uploads
+            APP_SERVER_SECRETS_FILE=$PROJECT_HOME/secrets.json
+            COUCHDB_DATADIR=$PROJECT_HOME/couchdb
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            /usr/local/bin/docker-compose -p "$PROJECT_ID" -f docker-compose.yml -f docker-compose.cloud.yml up --force-recreate --build -d
+
+            # Health check
+            /usr/bin/sleep 45
+            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "https://stories.floeproject.org/stories"
+    publishers:
+      - email:
+            recipients: builds@lists.idrc.ocad.ca

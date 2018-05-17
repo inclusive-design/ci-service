@@ -1,0 +1,19 @@
+- job:
+    node: i-0033.tor1.inclusivedesign.ca
+    name: stack-stories.floeproject.org-nightly-cleanup
+    project-type: freestyle
+    display-name: stack-stories.floeproject.org-nightly-cleanup
+    triggers:
+        - timed: "@midnight"
+    properties:
+      - inject:
+          properties-content: |
+            PROJECT_ID=f92c97d2
+            PROJECT_HOME=/srv/$PROJECT_ID
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            sudo rm -rf "$PROJECT_HOME/couchdb"
+    publishers:
+      - email:
+            recipients: builds@lists.idrc.ocad.ca
