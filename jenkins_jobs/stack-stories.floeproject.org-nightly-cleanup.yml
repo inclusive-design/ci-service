@@ -14,6 +14,7 @@
         - shell: |
             #!/bin/sh -ex
             sudo rm -rf "$PROJECT_HOME/couchdb"
+            sudo rm -rf "$PROJECT_HOME/uploads"
     publishers:
       - email:
             recipients: builds@lists.idrc.ocad.ca
