@@ -3,6 +3,9 @@
     node: master
     project-type: 'freestyle'
     display-name: 'update-jenkins-job-definitions'
+    properties:
+      - build-discarder:
+          days-to-keep: 30
     scm:
         - git:
             url: git@github.com:inclusive-design/ci-service.git
@@ -13,13 +16,8 @@
                 - master
     triggers:
       - github
-
     builders:      
       - shell: /usr/bin/jenkins-jobs --conf /etc/jenkins_jobs.ini update --delete-old ./jenkins_jobs
-
-    logrotate:
-      daysToKeep: 7
-
     publishers:
       - email:
           recipients: ops-notifications@lists.inclusivedesign.ca
