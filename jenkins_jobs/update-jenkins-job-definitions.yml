@@ -18,9 +18,9 @@
       - github
     builders:      
       - shell: |
-        #!/bin/sh -ex
-        . /var/lib/jenkins/jjb_venv/bin/activate
-        jenkins-jobs --conf /etc/jenkins_jobs.ini update --delete-old ./jenkins_jobs
+          #!/bin/sh -ex
+          . /var/lib/jenkins/jjb_venv/bin/activate
+          jenkins-jobs --conf /etc/jenkins_jobs.ini update --delete-old ./jenkins_jobs
     publishers:
       - email:
           recipients: ops-notifications@lists.inclusivedesign.ca
