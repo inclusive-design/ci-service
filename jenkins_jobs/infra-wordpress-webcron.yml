@@ -1,9 +1,14 @@
 - job:
-    name: 'infra-owncloud-webcron'
-    display-name: 'infra-owncloud-webcron'
+    name: 'infra-wordpress-webcron'
+    display-name: 'infra-wordpress-webcron'
     project-type: 'freestyle'
     node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops.git
+            branches:
+                - master
     triggers:
       - timed: '0 * * * *'
     builders:
-      - shell: curl -s -o /dev/null https://files.inclusivedesign.ca/cron.php
+      - shell: ./misc/wp_ping.sh
