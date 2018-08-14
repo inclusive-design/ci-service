@@ -1,0 +1,17 @@
+- job:
+    name: 'infra-letsencrypt-deploy'
+    display-name: 'infra-letsencrypt-deploy'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops.git
+            branches:
+                - master
+    triggers:
+      - reverse:
+          jobs:
+            - 'infra-letsencrypt-renew'
+            - 'infra-letsencrypt-request'
+    builders:
+      - shell: ansible-playbook -i environments/production playbooks/letsencrypt_deploy.yml

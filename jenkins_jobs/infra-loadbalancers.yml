@@ -1,0 +1,20 @@
+- job:
+    name: 'infra-load_balancers'
+    display-name: 'infra-load_balancers'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops.git
+            branches:
+                - master
+    triggers:
+      - reverse:
+          jobs:
+            - 'infra-letsencrypt-deploy'
+      - timed: '0 */8 * * *'
+    builders:
+      - shell: |
+          #!/bin/bash -ex
+          ansible-playbook -i environments/production playbooks/load_balancers.yml
+          ansible -b -i environments/production -m shell -a "systemctl reload nginx" load_balancers

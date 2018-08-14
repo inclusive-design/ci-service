@@ -1,0 +1,14 @@
+- job:
+    name: 'infra-letsencrypt-renew'
+    display-name: 'infra-letsencrypt-renew'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops.git
+            branches:
+                - master
+    triggers:
+        - timed: "0 21 * * *"
+    builders:
+      - shell: ansible-playbook -i environments/production playbooks/letsencrypt_renew.yml

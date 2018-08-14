@@ -1,0 +1,9 @@
+- job:
+    name: 'infra-owncloud-webcron'
+    display-name: 'infra-owncloud-webcron'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    triggers:
+      - timed: '0 * * * *'
+    builders:
+      - shell: curl -s -o /dev/null https://files.inclusivedesign.ca/cron.php

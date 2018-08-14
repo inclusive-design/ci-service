@@ -1,0 +1,18 @@
+- job:
+    name: 'infra-common'
+    display-name: 'infra-common'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops.git
+            branches:
+                - master
+    triggers:
+      - timed: '0 4 * * *'
+    builders:
+      - shell: |
+          #!/bin/bash -ex
+          ansible-playbook -i environments/dev playbooks/common.yml
+          ansible-playbook -i environments/production playbooks/common.yml
+          ansible-playbook -i environments/x-hypervisors -l kvm playbooks/common.yml

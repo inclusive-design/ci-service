@@ -1,0 +1,14 @@
+- job:
+    name: 'infra-backups'
+    display-name: 'infra-backups'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops.git
+            branches:
+                - master
+    triggers:
+        - timed: "0 23 * * *"
+    builders:
+      - shell: ./bin/backup.sh

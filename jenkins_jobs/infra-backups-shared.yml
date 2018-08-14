@@ -1,0 +1,19 @@
+- job:
+    name: 'infra-backups-shared'
+    display-name: 'infra-backups-shared'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    concurrent: false
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops-shared.git
+            recursive-submodules: true
+            branches:
+                - master
+    triggers:
+        - timed: "0 22 * * *"
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
+    builders:
+      - shell: cd ansible && ./bin/backup.sh
