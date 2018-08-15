@@ -11,4 +11,4 @@
     triggers:
       - timed: '0 * * * *'
     builders:
-      - shell: ./misc/wp_ping.sh
+      - shell: cd misc && ./wp_ping.sh
