@@ -1,0 +1,18 @@
+- job:
+    name: 'infra-docker-hugo'
+    display-name: 'infra-docker-hugo'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:idi-ops/docker-hugo.git
+            branches:
+                - master
+    triggers:
+      - github
+      - timed: 'H 5 * * *'
+    builders:
+      - shell: |
+          #!/bin/bash -ex
+          docker build -t inclusivedesign/hugo .
+          docker push inclusivedesign/hugo

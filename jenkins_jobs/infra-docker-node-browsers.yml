@@ -10,7 +10,7 @@
                 - master
     triggers:
       - github
-      - timed: '0 5 * * *'
+      - timed: 'H 5 * * *'
     builders:
       - shell: |
           #!/bin/bash -ex
