@@ -1,0 +1,17 @@
+- job:
+    name: 'infra-docker-node-browsers'
+    display-name: 'infra-docker-node-browsers'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:idi-ops/docker-node-browsers.git
+            branches:
+                - master
+    triggers:
+      - timed: '0 5 * * *'
+    builders:
+      - shell: |
+          #!/bin/bash -ex
+          docker build -t inclusivedesign/node-browsers .
+          docker push inclusivedesign/node-browsers
