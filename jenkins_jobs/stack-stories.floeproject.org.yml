@@ -33,4 +33,4 @@
             /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "https://stories.floeproject.org/stories"
     publishers:
       - email:
-            recipients: builds@lists.idrc.ocad.ca
+            recipients: ops-notifications@lists.inclusivedesign.ca
