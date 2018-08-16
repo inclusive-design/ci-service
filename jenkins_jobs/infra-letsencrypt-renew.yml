@@ -9,6 +9,6 @@
             branches:
                 - master
     triggers:
-        - timed: "0 21 * * *"
+        - timed: "H 23 * * *"
     builders:
       - shell: ansible-playbook -i environments/production playbooks/letsencrypt_renew.yml
