@@ -13,6 +13,6 @@
     builders:
       - shell: |
           #!/bin/bash -ex
-          ansible-playbook -i environments/dev playbooks/common.yml
-          ansible-playbook -i environments/production playbooks/common.yml
-          ansible-playbook -i environments/x-hypervisors -l kvm playbooks/common.yml
+          ansible-playbook --diff -i environments/dev playbooks/common.yml
+          ansible-playbook --diff -i environments/production playbooks/common.yml
+          ansible-playbook --diff -i environments/x-hypervisors -l kvm playbooks/common.yml
