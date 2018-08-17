@@ -16,5 +16,5 @@
     builders:
       - shell: |
           #!/bin/bash -ex
-          ansible-playbook -i environments/production playbooks/load_balancers.yml
+          ansible-playbook --diff -i environments/production playbooks/load_balancers.yml
           ansible -b -i environments/production -m shell -a "systemctl reload nginx" load_balancers
