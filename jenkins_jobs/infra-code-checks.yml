@@ -1,0 +1,19 @@
+- job:
+    name: 'infra-code-checks'
+    display-name: 'infra-code-checks'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops.git
+            branches:
+                - master
+    triggers:
+      - github
+    builders:
+      - shell: |
+          #!/bin/bash -ex
+          virtualenv venv
+          source venv/bin/activate
+          pip install ansible-lint
+          ansible-lint playbooks/*
