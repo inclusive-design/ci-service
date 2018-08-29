@@ -5,10 +5,10 @@
     display-name: stack-cities.inclusivedesign.ca
     scm:
         - git:
-            url: https://github.com/simonbates/website-cities.git
+            url: https://github.com/inclusive-design/website-cities.git
             skip-tag: true
             branches:
-                - CITY-7
+                - master
     triggers:
         - github
     properties:
