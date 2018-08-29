@@ -1,0 +1,14 @@
+- job:
+    name: 'infra-vagrant-boxes-deploy'
+    display-name: 'infra-vagrant-boxes-deploy'
+    project-type: 'freestyle'
+    node: i-0023.tor1.incd.ca
+    scm:
+        - git:
+            url: git@github.com:inclusive-design/ops.git
+            branches:
+                - master
+    triggers:
+      - timed: '0 */12 * * *'
+    builders:
+      - shell: ansible-playbook -D -i "h-0005.tor1.incd.ca," playbooks/vagrant_boxes_deploy.yml
