@@ -1,0 +1,29 @@
+- job:
+    node: i-0033.tor1.incd.ca
+    name: stack-cities.inclusivedesign.ca
+    project-type: freestyle
+    display-name: stack-cities.inclusivedesign.ca
+    scm:
+        - git:
+            url: https://github.com/simonbates/website-cities.git
+            skip-tag: true
+            branches:
+                - CITY-7
+    triggers:
+        - github
+    properties:
+      - inject:
+          properties-content: |
+            STATIC_SITE_PORT=38088
+            PROJECT_ID=CA669571
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            /usr/local/bin/docker-compose -p "$PROJECT_ID" up --force-recreate --build -d
+
+            # Health check
+            /usr/bin/sleep 45
+            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "https://cities.inclusivedesign.ca/"
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
