@@ -23,7 +23,7 @@
 
             # Health check
             /usr/bin/sleep 45
-            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "https://adod-static.idrc.ocadu.ca/"
+            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "http://adod-static.idrc.ocadu.ca/"
     publishers:
       - email:
             recipients: ops-notifications@lists.inclusivedesign.ca
