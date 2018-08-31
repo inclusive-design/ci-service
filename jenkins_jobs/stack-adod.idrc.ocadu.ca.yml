@@ -1,0 +1,29 @@
+- job:
+    node: i-0033.tor1.incd.ca
+    name: stack-adod.idrc.ocadu.ca
+    project-type: freestyle
+    display-name: stack-adod.idrc.ocadu.ca
+    scm:
+        - git:
+            url: https://github.com/inclusive-design/adod.idrc.ocadu.ca
+            skip-tag: true
+            branches:
+                - master
+    triggers:
+        - github
+    properties:
+      - inject:
+          properties-content: |
+            STATIC_SITE_PORT=38089
+            PROJECT_ID=7A1D51B3
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            /usr/local/bin/docker-compose -p "$PROJECT_ID" up --force-recreate --build -d
+
+            # Health check
+            /usr/bin/sleep 45
+            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "https://adod-static.idrc.ocadu.ca/"
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
