@@ -1,0 +1,28 @@
+- job:
+    node: i-0033.tor1.incd.ca
+    name: stack-fluid-irc-bot
+    project-type: freestyle
+    display-name: stack-fluid-irc-bot
+    scm:
+        - git:
+            url: https://github.com/waharnum/fluid-irc-bot
+            skip-tag: true
+            branches:
+                - master
+    properties:
+      - inject:
+          properties-content: |
+            PROJECT_ID=D2481FDD
+            PROJECT_HOME=/srv/$PROJECT_ID
+            WEB_PORT=38090
+            ENV_FILE_DIRECTORY=$PROJECT_HOME
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            /usr/local/bin/docker-compose -p "$PROJECT_ID" up --force-recreate --build -d
+            # Health check
+            # /usr/bin/sleep 45
+            # /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "https://irclogs.fluidproject.org"
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
