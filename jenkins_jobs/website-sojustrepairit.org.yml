@@ -17,7 +17,6 @@
             site: 'e7b4f940_sojustrepairit.org'
             source: '**'
             target: '/var/www/e7b4f940'
-            # clean-remote: true
             fail-on-error: true
             use-pty: true
             timeout: 180000
