@@ -5,10 +5,10 @@
     display-name: stack-stories.floeproject.org
     scm:
         - git:
-            url: https://github.com/waharnum/sjrk-story-telling-server.git
+            url: https://github.com/fluid-project/sjrk-story-telling-server.git
             skip-tag: true
             branches:
-                - SJRK-56-learningReflections
+                - learning-to-learn
     triggers:
         - github
         - reverse:
