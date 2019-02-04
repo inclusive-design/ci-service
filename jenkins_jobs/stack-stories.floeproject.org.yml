@@ -21,6 +21,7 @@
             PROJECT_HOME=/srv/$PROJECT_ID
             APP_SERVER_PORT=38086
             APP_SERVER_UPLOADS_DIRECTORY=$PROJECT_HOME/uploads
+            APP_SERVER_DELETED_UPLOADS_DIRECTORY=$PROJECT_HOME/deleted_uploads
             APP_SERVER_SECRETS_FILE=$PROJECT_HOME/secrets.json
             COUCHDB_DATADIR=$PROJECT_HOME/couchdb
     builders:
