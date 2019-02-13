@@ -8,7 +8,7 @@
             url: https://github.com/fluid-project/sjrk-story-telling-server.git
             skip-tag: true
             branches:
-                - learning-to-learn
+                - stories-floe-dev
     properties:
       - inject:
           properties-content: |
