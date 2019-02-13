@@ -3,7 +3,7 @@
     name: stack-staging-stories.floeproject.org-nightly-cleanup
     project-type: freestyle
     display-name: stack-staging-stories.floeproject.org-nightly-cleanup
-    triggers:	
+    triggers:
       - timed: "@midnight"    
     properties:
       - inject:
