@@ -9,11 +9,6 @@
             skip-tag: true
             branches:
                 - learning-to-learn
-    triggers:
-        - github
-        - reverse:
-            jobs: stack-stories.floeproject.org-nightly-cleanup
-            result: success
     properties:
       - inject:
           properties-content: |
