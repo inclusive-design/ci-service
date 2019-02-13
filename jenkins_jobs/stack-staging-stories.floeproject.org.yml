@@ -9,6 +9,11 @@
             skip-tag: true
             branches:
                 - stories-floe-dev
+    triggers:	
+        - github	
+        - reverse:	
+            jobs: stack-staging-stories.floeproject.org-nightly-cleanup	
+            result: success                
     properties:
       - inject:
           properties-content: |
