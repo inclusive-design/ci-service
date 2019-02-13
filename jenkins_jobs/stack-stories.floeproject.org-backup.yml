@@ -1,12 +1,12 @@
 - job:
     node: i-0033.tor1.incd.ca
-    name: stack-karisma-stories.floeproject.org-backup
+    name: stack-stories.floeproject.org-backup
     project-type: freestyle
-    display-name: stack-karisma-stories.floeproject.org-backup
+    display-name: stack-stories.floeproject.org-backup
     properties:
       - inject:
           properties-content: |
-            PROJECT_ID=c00c43b6
+            PROJECT_ID=f92c97d2
             PROJECTS_DIRECTORY=/srv
     builders:
         - shell: |
