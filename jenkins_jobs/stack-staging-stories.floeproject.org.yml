@@ -1,0 +1,32 @@
+- job:
+    node: i-0033.tor1.incd.ca
+    name: stack-staging-stories.floeproject.org
+    project-type: freestyle
+    display-name: stack-staging-stories.floeproject.org
+    scm:
+        - git:
+            url: https://github.com/fluid-project/sjrk-story-telling-server.git
+            skip-tag: true
+            branches:
+                - learning-to-learn
+    properties:
+      - inject:
+          properties-content: |
+            PROJECT_ID=006fb6eb
+            PROJECT_HOME=/srv/$PROJECT_ID
+            APP_SERVER_PORT=38091
+            APP_SERVER_UPLOADS_DIRECTORY=$PROJECT_HOME/uploads
+            APP_SERVER_DELETED_UPLOADS_DIRECTORY=$PROJECT_HOME/deleted_uploads
+            APP_SERVER_SECRETS_FILE=$PROJECT_HOME/secrets.json
+            COUCHDB_DATADIR=$PROJECT_HOME/couchdb
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            /usr/local/bin/docker-compose -p "$PROJECT_ID" -f docker-compose.yml -f docker-compose.cloud.yml up --force-recreate --build -d
+
+            # Health check
+            /usr/bin/sleep 45
+            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "https://staging-stories.floeproject.org/stories"
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
