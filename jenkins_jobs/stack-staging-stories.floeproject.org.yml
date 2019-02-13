@@ -9,7 +9,7 @@
             skip-tag: true
             branches:
                 - stories-floe-dev
-    triggers:	
+    triggers:
         - github	
         - reverse:	
             jobs: stack-staging-stories.floeproject.org-nightly-cleanup	
