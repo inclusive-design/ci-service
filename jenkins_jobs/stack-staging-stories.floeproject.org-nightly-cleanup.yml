@@ -1,0 +1,19 @@
+- job:
+    node: i-0033.tor1.incd.ca
+    name: stack-staging-stories.floeproject.org-nightly-cleanup
+    project-type: freestyle
+    display-name: stack-staging-stories.floeproject.org-nightly-cleanup
+    properties:
+      - inject:
+          properties-content: |
+            PROJECT_ID=006fb6eb
+            PROJECT_HOME=/srv/$PROJECT_ID
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            sudo rm -rf "$PROJECT_HOME/couchdb"
+            sudo rm -rf "$PROJECT_HOME/uploads"
+            sudo rm -rf "$PROJECT_HOME/deleted_uploads"
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
