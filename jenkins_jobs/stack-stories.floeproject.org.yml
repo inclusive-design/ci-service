@@ -9,6 +9,8 @@
             skip-tag: true
             branches:
                 - stories-floe-production
+    triggers:
+        - github
     properties:
       - inject:
           properties-content: |
