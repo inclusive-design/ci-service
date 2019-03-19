@@ -5,7 +5,7 @@
     display-name: stack-staging-stories.floeproject.org
     scm:
         - git:
-            url: https://github.com/fluid-project/sjrk-story-telling-server.git
+            url: https://github.com/fluid-project/sjrk-story-telling.git
             skip-tag: true
             branches:
                 - stories-floe-dev
