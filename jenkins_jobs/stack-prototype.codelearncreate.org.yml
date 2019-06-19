@@ -1,8 +1,8 @@
 - job:
     node: i-0033.tor1.incd.ca
-    name: stack-prototype.codelearncreate.org/
+    name: stack-prototype.codelearncreate.org
     project-type: freestyle
-    display-name: stack-prototype.codelearncreate.org/
+    display-name: stack-prototype.codelearncreate.org
     scm:
         - git:
             url: https://github.com/codelearncreate/c2lc-exploratory.git
