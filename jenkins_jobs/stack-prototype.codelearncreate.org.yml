@@ -1,0 +1,29 @@
+- job:
+    node: i-0033.tor1.incd.ca
+    name: stack-prototype.codelearncreate.org/
+    project-type: freestyle
+    display-name: stack-prototype.codelearncreate.org/
+    scm:
+        - git:
+            url: https://github.com/codelearncreate/c2lc-exploratory.git
+            skip-tag: true
+            branches:
+                - master
+    triggers:
+        - github
+    properties:
+      - inject:
+          properties-content: |
+            STATIC_SITE_PORT=38092
+            PROJECT_ID=80A25C8B
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            /usr/local/bin/docker-compose -p "$PROJECT_ID" up --force-recreate --build -d
+
+            # Health check
+            /usr/bin/sleep 45
+            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "http://prototype.codelearncreate.org/"
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
