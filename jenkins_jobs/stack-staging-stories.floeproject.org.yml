@@ -23,6 +23,7 @@
             APP_SERVER_UPLOADS_DIRECTORY=$PROJECT_HOME/uploads
             APP_SERVER_DELETED_UPLOADS_DIRECTORY=$PROJECT_HOME/deleted_uploads
             APP_SERVER_SECRETS_FILE=$PROJECT_HOME/secrets.json
+            APP_SERVER_CONFIG_FILE=$PROJECT_HOME/sjrk.storyTelling.server.config.json5
             COUCHDB_DATADIR=$PROJECT_HOME/couchdb
     builders:
         - shell: |
