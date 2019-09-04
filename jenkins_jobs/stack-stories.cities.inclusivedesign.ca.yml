@@ -1,0 +1,34 @@
+- job:
+    node: i-0033.tor1.incd.ca
+    name: stack-stories.cities.inclusivedesign.ca
+    project-type: freestyle
+    display-name: stack-stories.cities.inclusivedesign.ca
+    scm:
+        - git:
+            url: https://github.com/fluid-project/sjrk-story-telling.git
+            skip-tag: true
+            branches:
+                - stories-cities-production
+    triggers:
+        - github
+    properties:
+      - inject:
+          properties-content: |
+            PROJECT_ID=6d4309f7
+            PROJECT_HOME=/srv/$PROJECT_ID
+            APP_SERVER_PORT=38092
+            APP_SERVER_UPLOADS_DIRECTORY=$PROJECT_HOME/uploads
+            APP_SERVER_DELETED_UPLOADS_DIRECTORY=$PROJECT_HOME/deleted_uploads
+            APP_SERVER_SECRETS_FILE=$PROJECT_HOME/secrets.json
+            COUCHDB_DATADIR=$PROJECT_HOME/couchdb
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            /usr/local/bin/docker-compose -p "$PROJECT_ID" -f docker-compose.yml -f docker-compose.cloud.yml up --force-recreate --build -d
+
+            # Health check
+            /usr/bin/sleep 45
+            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "https://stories.cities.inclusivedesign.ca/stories"
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
