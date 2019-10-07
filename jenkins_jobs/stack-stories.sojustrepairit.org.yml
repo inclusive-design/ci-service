@@ -29,7 +29,7 @@
 
             # Health check
             /usr/bin/sleep 45
-            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "https://stories.sojustrepairit.org/stories"
+            /usr/bin/curl --no-buffer --retry 120 --retry-delay 1 "http://stories.sojustrepairit.org/stories"
     publishers:
       - email:
             recipients: ops-notifications@lists.inclusivedesign.ca
