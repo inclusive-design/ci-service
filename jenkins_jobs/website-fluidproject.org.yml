@@ -15,7 +15,7 @@
             #!/bin/sh -ex
             npm install
             npm install docpad
-            $(npm bin)/docpad generate --env static
+            $(npm bin)/npm run generate
     publishers:
       - email:
             recipients: ops-notifications@lists.inclusivedesign.ca
