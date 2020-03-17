@@ -8,7 +8,7 @@
             url: https://github.com/fluid-project/sjrk-story-telling.git
             skip-tag: true
             branches:
-                - stories-floe-dev
+                - master
     triggers:
         - github
         - reverse:
