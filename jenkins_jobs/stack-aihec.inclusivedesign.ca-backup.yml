@@ -1,0 +1,17 @@
+- job:
+    node: i-0033.tor1.incd.ca
+    name: stack-aihec.inclusivedesign.ca-backup
+    project-type: freestyle
+    display-name: stack-aihec.inclusivedesign.ca-backup
+    properties:
+      - inject:
+          properties-content: |
+            PROJECT_ID=240dabdd
+            PROJECTS_DIRECTORY=/srv
+    builders:
+        - shell: |
+            #!/bin/sh -ex
+            sudo /srv/backup.sh $PROJECT_ID $PROJECTS_DIRECTORY
+    publishers:
+      - email:
+            recipients: ops-notifications@lists.inclusivedesign.ca
