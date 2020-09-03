@@ -13,7 +13,7 @@
             git-config-name: idrc-deploy
             git-config-email: idrc.ops@gmail.com
             branches:
-                - master
+                - main
     triggers:
       - github
     builders:      

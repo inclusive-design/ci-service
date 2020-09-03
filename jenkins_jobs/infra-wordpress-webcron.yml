@@ -7,7 +7,7 @@
         - git:
             url: git@github.com:inclusive-design/ops.git
             branches:
-                - master
+                - main
     triggers:
       - timed: '0 * * * *'
     builders:

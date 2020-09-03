@@ -7,6 +7,6 @@
         - git:
             url: git@github.com:inclusive-design/ops.git
             branches:
-                - master
+                - main
     builders:
       - shell: ansible-playbook -i environments/production playbooks/letsencrypt_request.yml
