@@ -7,7 +7,7 @@
             url: https://github.com/inclusive-design/guide.inclusivedesign.ca.git
             skip-tag: true
             branches:
-                - master
+                - main
     triggers:
         - github
     builders:

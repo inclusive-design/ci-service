@@ -7,7 +7,7 @@
             url: https://github.com/inclusive-design/idi-theme/
             skip-tag: true
             branches:
-                - master
+                - main
     triggers:
         - github
     publishers:
